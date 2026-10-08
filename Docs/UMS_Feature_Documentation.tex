@@ -1,0 +1,714 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.75cm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{microtype}
+
+\definecolor{AmritaMaroon}{HTML}{8D153A}
+\definecolor{AmritaDark}{HTML}{5F1028}
+\definecolor{AmritaGold}{HTML}{C89C46}
+\definecolor{SoftRose}{HTML}{F8EDF1}
+\definecolor{SoftGray}{HTML}{F7F5F3}
+\definecolor{TextGray}{HTML}{625B58}
+\definecolor{Green}{HTML}{32705A}
+\definecolor{Blue}{HTML}{376E8B}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AmritaMaroon,
+  urlcolor=AmritaMaroon,
+  pdftitle={UMS Feature Documentation},
+  pdfauthor={UMS Project Team}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{AmritaMaroon}{\textbf{AMRITA UMS}}}
+\rhead{\textcolor{TextGray}{Feature Documentation}}
+\cfoot{\textcolor{TextGray}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{AmritaGold}\leaders\hrule height \headrulewidth\hfill}}
+
+\titleformat{\section}{\Large\bfseries\color{AmritaMaroon}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{AmritaDark}}{\thesubsection}{0.65em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{AmritaMaroon}}{\thesubsubsection}{0.55em}{}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=3pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+
+\newtcolorbox{scopebox}{
+  colback=SoftRose,colframe=AmritaMaroon,boxrule=0.7pt,arc=2mm,
+  left=3mm,right=3mm,top=2.5mm,bottom=2.5mm
+}
+
+\begin{document}
+
+\begin{titlepage}
+\pagecolor{AmritaDark}
+\color{white}
+\vspace*{1.8cm}
+{\Large\textbf{AMRITA VISHWA VIDYAPEETHAM}}\\[0.3cm]
+{\color{AmritaGold}\rule{\textwidth}{1.2pt}}\\[1.4cm]
+{\Huge\bfseries University Management\\[0.15cm]System}\\[0.6cm]
+{\LARGE Feature Documentation}\\[0.35cm]
+{\large Role-based functional scope for Admin, Employee/Teacher, and Student}\\[1.2cm]
+
+\begin{tcolorbox}[colback=white!7!AmritaDark,colframe=AmritaGold,boxrule=0.8pt,arc=3mm]
+\color{white}
+\textbf{Document purpose}\\
+Provide an in-depth, mail-ready inventory of the features to be retained,
+modernized, and developed in the University Management System. The scope
+combines the approved UMS prototype with capabilities observed in the existing
+Amrita Academic Management Suite.
+\end{tcolorbox}
+
+\vfill
+{\color{AmritaGold}\textbf{VERSION 1.0}}\\
+July 2026\\[0.6cm]
+{\small Status: Proposed functional baseline for stakeholder review and phased implementation.}
+\end{titlepage}
+\nopagecolor
+\color{black}
+
+\tableofcontents
+\newpage
+
+\section{Document Overview}
+
+\subsection{Purpose}
+This document defines what the new UMS should provide to its three primary user
+groups: administrators, employees/teachers, and students. It is intended to be
+shared with academic and technical stakeholders to validate scope before
+backend development begins.
+
+\begin{scopebox}
+\textbf{Important status note.} The modern UMS currently exists as an approved,
+navigable frontend prototype using mock data. Features in this document are the
+target product scope. Items visible in the prototype are experience baselines;
+production authentication, permissions, business rules, APIs, and database
+persistence remain to be implemented.
+\end{scopebox}
+
+\subsection{Sources used}
+\begin{itemize}
+  \item Approved Amrita-inspired UMS frontend prototype.
+  \item Existing AUMS screenshots showing Academics, Evaluation, Exam Admin,
+        Survey, Reports, Personal, Library, OPAC, Help, and Exam Application menus.
+  \item Current academic ERP practices required for secure role-based operation.
+\end{itemize}
+
+\subsection{Role terminology}
+\begin{itemize}
+  \item \textbf{Admin:} authorized academic, examination, department, library,
+        or system administrators. Exact rights depend on assigned permissions.
+  \item \textbf{Employee/Teacher:} faculty members and eligible academic employees
+        responsible for courses, attendance, evaluation, mentoring, and reporting.
+  \item \textbf{Student:} enrolled learners using academic self-service features.
+\end{itemize}
+
+\section{Feature Principles}
+
+\begin{itemize}
+  \item \textbf{Role-based access:} every screen and action is controlled by backend permissions.
+  \item \textbf{Single source of truth:} academic records are stored centrally with effective dates and history.
+  \item \textbf{Approval where needed:} grade changes, attendance corrections, result publication,
+        and sensitive master-data changes follow configurable approval workflows.
+  \item \textbf{Auditability:} important actions record who acted, what changed, when, and why.
+  \item \textbf{Operational clarity:} every page supports loading, empty, success, validation, and error states.
+  \item \textbf{Responsive experience:} core workflows work on desktop, tablet, and mobile.
+  \item \textbf{Controlled modernization:} useful AUMS functions are retained with clearer navigation,
+        search, filtering, export, and accessible design.
+\end{itemize}
+
+\section{Role and Permission Model}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.0cm} X X X}
+\toprule
+Capability & Admin & Employee/Teacher & Student \\
+\midrule
+View institutional data & Permission-based, broad & Assigned classes/courses & Own records only \\
+Maintain master data & Create/edit/activate & View relevant records & No \\
+Attendance & Configure, monitor, approve & Mark assigned classes & View own attendance \\
+Evaluation and marks & Configure, moderate, publish & Enter marks for assigned courses & View published results \\
+Reports & Institutional and departmental & Assigned-course reports & Personal reports \\
+Profile & Manage allowed accounts & Manage own allowed fields & Manage own allowed fields \\
+Library & Configure and report & Search and use services & Search and use services \\
+Audit and settings & Authorized admins only & No & No \\
+\bottomrule
+\end{tabularx}
+
+The system should support permission groups beyond the three broad roles. For
+example, an Exam Controller may publish results without being allowed to edit
+student master data, while a Department Chair may approve grade changes only
+for their department.
+
+\newpage
+\section{Admin Features}
+
+\subsection{Admin Dashboard}
+\begin{itemize}
+  \item Display total students, faculty, courses, departments, active batches, and current semester.
+  \item Show attendance trends, pending approvals, mark-entry completion, upcoming examinations,
+        timetable conflicts, notices, and recent administrative activity.
+  \item Provide quick actions for adding users, creating course offerings, publishing announcements,
+        scheduling examinations, and opening frequently used reports.
+  \item Support campus, department, programme, academic year, semester, and date filters.
+  \item Allow dashboard widgets to respect each administrator's permissions and scope.
+\end{itemize}
+
+\subsection{Identity, Roles, and Access}
+\begin{itemize}
+  \item Create, activate, suspend, unlock, and archive user accounts.
+  \item Assign one or more roles, campus scopes, department scopes, and action permissions.
+  \item Support institutional SSO or secure local authentication with password policies and MFA readiness.
+  \item Configure session timeout, login controls, and account-recovery workflows.
+  \item Review login history, failed attempts, active sessions, and permission changes.
+  \item Impersonation, if permitted, must be restricted, visibly indicated, and fully audited.
+\end{itemize}
+
+\subsection{University and Academic Master Data}
+\begin{itemize}
+  \item Maintain campuses, schools, departments, programmes, regulations, academic years,
+        semesters, sections, buildings, rooms, laboratories, and holidays.
+  \item Maintain staff master records: employee ID, name, department, designation,
+        employment status, contact information, and teaching eligibility.
+  \item Maintain student master records: student ID, programme, batch, semester,
+        section, academic status, mentor, and contact information.
+  \item Maintain course and subject data: codes, titles, credits, type, prerequisites,
+        syllabus version, owning department, and active status.
+  \item Maintain batch capacity, class sections, programme duration, semester structure,
+        and curriculum/stem-chart mappings.
+  \item Prefer inactive or archived states over deleting historical academic records.
+\end{itemize}
+
+\subsection{Curriculum, Course Administration, and Registration}
+\begin{itemize}
+  \item Create and version programme curricula and stem charts.
+  \item Define core, elective, laboratory, project, audit, and value-added course categories.
+  \item Create semester course offerings with capacity, section, faculty, room, and delivery mode.
+  \item Allocate primary and supporting faculty; view workload and allocation conflicts.
+  \item Configure registration windows, add/drop periods, prerequisites, credit limits,
+        arrear rules, and approval requirements.
+  \item Register students individually or in bulk and track unregistered or partially registered students.
+  \item Manage course withdrawal, transfer, repeat registration, and section changes with history.
+  \item Produce registration status, course demand, capacity, and exception reports.
+\end{itemize}
+
+\subsection{Timetable and Academic Calendar}
+\begin{itemize}
+  \item Build weekly timetables by programme, batch, section, faculty, classroom, and laboratory.
+  \item Detect faculty, room, batch, and time-slot conflicts before publication.
+  \item Configure slot patterns, working days, breaks, holidays, substitutions, and special sessions.
+  \item Publish role-specific timetable views for administrators, teachers, and students.
+  \item Support view, print, download, and calendar export.
+  \item Maintain the academic calendar for registration, instruction, assessment,
+        examinations, holidays, result publication, and institutional events.
+\end{itemize}
+
+\subsection{Attendance Administration}
+\begin{itemize}
+  \item Define attendance rules, eligible course types, thresholds, session durations,
+        grace periods, lock dates, and shortage categories.
+  \item Monitor attendance capture completion by campus, department, course, faculty, and date.
+  \item Review missing attendance, abnormal patterns, class cancellations, and late entries.
+  \item Configure attendance-correction requests with reason, evidence, approval, and audit history.
+  \item Produce daily, monthly, course-wise, student-wise, shortage, and eligibility reports.
+  \item Notify teachers about pending attendance and students about shortage risk.
+\end{itemize}
+
+\subsection{Evaluation Configuration and Mark Governance}
+\begin{itemize}
+  \item Create evaluation components such as quizzes, assignments, laboratories,
+        mid-semester examinations, end-semester examinations, projects, and viva.
+  \item Define component weights, maximum marks, pass marks, absence rules,
+        rounding rules, and contribution to the final grade.
+  \item Create examinations and configure mark-entry windows and authorized evaluators.
+  \item Configure class grade rules, grade boundaries, moderation rules, and grade-mark categories.
+  \item Track mark-entry completion and identify missing, absent, withheld, or invalid entries.
+  \item Assign grades, apply approved grace marks, and calculate final outcomes.
+  \item Permit grade changes only through reasoned, permission-controlled workflows with old/new values.
+  \item Lock finalized marks and grades; reopening requires authorized approval and an audit record.
+  \item Generate class-grade, classwise student, attendance, registration-tracking,
+        and grade-mark category reports.
+\end{itemize}
+
+\subsection{Examination Administration}
+\begin{itemize}
+  \item Create examination sessions, schedules, eligible courses, venues, and exam patterns.
+  \item Allocate halls, seating, invigilators, and examination duties.
+  \item Generate and publish examination timetables and hall tickets.
+  \item Manage student exam applications, eligibility, fee status, and approval.
+  \item Track mark/grade entry status across courses and departments.
+  \item Produce student-wise arrear, course-wise arrear, number-of-arrears,
+        and performance-analysis reports.
+  \item Manage withheld, malpractice, absent, incomplete, revaluation, supplementary,
+        and improvement-examination cases.
+  \item Approve and publish results with version, publication time, and authorized sign-off.
+\end{itemize}
+
+\subsection{Survey and Feedback Administration}
+\begin{itemize}
+  \item Create course feedback, faculty feedback, institutional surveys, and custom questionnaires.
+  \item Configure audience, anonymity, open/close dates, mandatory status, and reminders.
+  \item Track participation without exposing anonymous response identities.
+  \item Produce non-submitted-user reports and aggregated response analysis.
+  \item Restrict detailed survey results to authorized users.
+\end{itemize}
+
+\subsection{Reports and Analytics}
+\begin{itemize}
+  \item Student reports: profile, enrolment, registration, attendance, performance,
+        progression, arrears, and graduation eligibility.
+  \item Staff reports: profile, course allocation, teaching load, timetable,
+        attendance-entry completion, and mark-entry completion.
+  \item Attendance reports: daily, course-wise, student-wise, shortage,
+        exception, and correction history.
+  \item Course-offering reports: capacity, enrolment, allocation, schedule,
+        cancellations, and registration exceptions.
+  \item Mark and grade reports: component marks, final marks, grade distribution,
+        pass percentage, moderation, grace marks, changes, and publication status.
+  \item Export authorized results to PDF, spreadsheet, or CSV with report metadata and filters.
+  \item Provide trend dashboards without exposing personally identifiable data beyond user permission.
+\end{itemize}
+
+\subsection{Announcements, Notifications, and Events}
+\begin{itemize}
+  \item Create public, campus, department, programme, course, batch, or user-specific notices.
+  \item Schedule publishing and expiry; support attachments, acknowledgement, and priority.
+  \item Trigger notifications for registration, timetable changes, attendance shortage,
+        assignments, examinations, mark entry, results, library dues, and approvals.
+  \item Maintain delivery and read status for in-app messages; support future email/SMS/push integration.
+\end{itemize}
+
+\subsection{Library and OPAC Administration}
+\begin{itemize}
+  \item Maintain books, editions, authors, publishers, subjects, copies, locations, and digital resources.
+  \item Manage issue, return, renewal, reservation, fine, lost/damaged, and exception workflows.
+  \item Configure borrowing limits and loan periods by user category.
+  \item Provide circulation, overdue, inventory, utilization, and fine reports.
+  \item Connect the UMS library entry point to OPAC or an existing library platform where required.
+\end{itemize}
+
+\subsection{System Settings, Audit, and Operations}
+\begin{itemize}
+  \item Configure branding, academic defaults, numbering, date formats, document templates,
+        notification templates, integrations, and feature flags.
+  \item Review audit logs by user, module, action, record, date, and outcome.
+  \item Monitor integration failures, background jobs, import/export jobs, and notification delivery.
+  \item Support controlled data imports with validation, preview, error reports, and rollback planning.
+  \item Define retention, archive, backup, restore, and disaster-recovery procedures.
+\end{itemize}
+
+\newpage
+\section{Employee/Teacher Features}
+
+\subsection{Teacher Dashboard}
+\begin{itemize}
+  \item Show today's classes, assigned subjects, student count, pending attendance,
+        mark-entry deadlines, assignments awaiting review, notices, and upcoming exams.
+  \item Provide quick links to class roster, attendance, material upload, assignment creation,
+        mark entry, timetable, and frequently used reports.
+  \item Display only courses, students, and data within the teacher's authorized allocation.
+\end{itemize}
+
+\subsection{Profile and Personal Account}
+\begin{itemize}
+  \item View personal and employment profile, department, designation, qualifications,
+        contact details, and assigned responsibilities.
+  \item Upload or update profile photo and edit permitted account fields.
+  \item View account status and request correction of protected HR-managed information.
+  \item Access My Profile, View Profile, Update Account, and password/session controls.
+\end{itemize}
+
+\subsection{Academics, Curriculum, and Timetable}
+\begin{itemize}
+  \item View programme stem charts, course syllabus, learning outcomes, credits, and prerequisites.
+  \item View and print personal timetable, course timetable, room details, and academic calendar.
+  \item Receive timetable-change, substitution, room-change, and cancellation notifications.
+  \item View assigned workload and report allocation or scheduling issues.
+\end{itemize}
+
+\subsection{My Courses and Student Rosters}
+\begin{itemize}
+  \item View assigned course offerings, sections, co-faculty, enrolment, and course settings.
+  \item View searchable student rosters with permitted academic details and registration status.
+  \item Track course registration and identify students who have not completed registration.
+  \item Access class communication, announcements, materials, attendance, evaluation, and reports.
+  \item Export authorized class lists while protecting restricted student information.
+\end{itemize}
+
+\subsection{Attendance Capture}
+\begin{itemize}
+  \item Open the scheduled class session and mark students present, absent, late, or excused.
+  \item Support bulk marking, individual correction before lock, and optional remarks.
+  \item Show session date, time, room, enrolled students, and already-recorded status.
+  \item Save drafts where permitted and clearly confirm final submission.
+  \item Request corrections after lock with reason and supporting evidence.
+  \item View class attendance history, shortage lists, student percentages, and pending sessions.
+  \item Prevent attendance entry for unauthorized courses or invalid dates.
+\end{itemize}
+
+\subsection{Assignments and Study Materials}
+\begin{itemize}
+  \item Create assignments with title, instructions, attachments, marks, rubric,
+        release date, deadline, late policy, and eligible students.
+  \item Edit or cancel assignments before configured cut-offs and notify affected students.
+  \item View submissions, non-submitters, late submissions, file history, and student remarks.
+  \item Evaluate using marks or rubrics, add feedback, return work, and publish scores.
+  \item Upload notes, presentations, references, links, laboratory manuals, and recordings.
+  \item Organize materials by course, unit, topic, week, or resource type and control visibility.
+\end{itemize}
+
+\subsection{Evaluation, Marks, and Grades}
+\begin{itemize}
+  \item View evaluation components and examinations configured for assigned courses.
+  \item Create components or exams only when the teacher's permission and academic rules allow it.
+  \item Enter marks individually or in a validated grid; support authorized spreadsheet import.
+  \item Record absent, withheld, malpractice, incomplete, or not-applicable status.
+  \item Validate mark range, missing entries, duplicate students, and completion before submission.
+  \item View mark-entry status and submit completed components for review or locking.
+  \item Apply class grade rules and assign grades only when permitted.
+  \item Request grade changes with old grade, proposed grade, reason, evidence, and approval trail.
+  \item Apply grace marks only under authorized rules; teachers should not bypass policy.
+  \item Access class-grade reports, classwise student reports, attendance reports,
+        registration tracking, and grade-category details for assigned courses.
+\end{itemize}
+
+\subsection{Examination Responsibilities}
+\begin{itemize}
+  \item View examination timetable, venue, invigilation duties, evaluation allocation, and deadlines.
+  \item Confirm or report conflicts in assigned examination duties.
+  \item Access authorized mark-entry and grade-entry tasks.
+  \item View course-wise arrear and performance reports where the employee's role permits.
+  \item Submit examination-related requests and track their status.
+\end{itemize}
+
+\subsection{Reports, Survey, Search, Library, and Help}
+\begin{itemize}
+  \item Run authorized student, attendance, course-offering, mark, grade, and grace-mark reports.
+  \item Participate in assigned surveys and view non-submission reports only when authorized.
+  \item Search permitted students, courses, faculty, rooms, and academic records.
+  \item Search OPAC, reserve resources, view loans, renew items, and review fines.
+  \item Access contextual help, process guides, support requests, and system announcements.
+\end{itemize}
+
+\newpage
+\section{Student Features}
+
+\subsection{Student Dashboard}
+\begin{itemize}
+  \item Display current programme and semester, attendance percentage, today's classes,
+        upcoming exams, assignments, announcements, results, and library alerts.
+  \item Highlight actions requiring attention such as registration, low attendance,
+        missing submissions, exam applications, dues, or profile verification.
+  \item Provide quick links to timetable, attendance, courses, assignments,
+        materials, results, library, notifications, and support.
+\end{itemize}
+
+\subsection{Profile and Personal Services}
+\begin{itemize}
+  \item View university identity, programme, batch, semester, section, mentor,
+        contact information, and academic status.
+  \item Update permitted contact fields and profile photo; request correction for protected data.
+  \item View account activity, active sessions, communication preferences, and consent settings.
+  \item Download permitted identity or enrolment documents.
+\end{itemize}
+
+\subsection{Curriculum and Course Registration}
+\begin{itemize}
+  \item View programme curriculum/stem chart, completed credits, pending requirements,
+        prerequisites, elective baskets, and current course offerings.
+  \item Register for eligible courses within configured dates and credit limits.
+  \item See clear reasons for blocked registration, including prerequisites, capacity,
+        timetable clash, academic hold, or approval requirement.
+  \item Request add/drop, withdrawal, repeat, or section change where policy permits.
+  \item Track registration approval and download the confirmed course-registration summary.
+\end{itemize}
+
+\subsection{Courses, Timetable, and Academic Calendar}
+\begin{itemize}
+  \item View registered courses, faculty, syllabus, learning outcomes, credits, and resources.
+  \item View personal weekly timetable with room, delivery mode, faculty, and schedule changes.
+  \item Download or print timetable and add published events to a personal calendar.
+  \item View academic deadlines, holidays, examination periods, and university events.
+\end{itemize}
+
+\subsection{Attendance}
+\begin{itemize}
+  \item View overall and course-wise attendance percentage, present/absent counts,
+        required threshold, and shortage risk.
+  \item View session-level history with date, time, course, faculty, and recorded status.
+  \item Receive alerts when attendance approaches or falls below the required threshold.
+  \item Submit a correction request with reason and evidence where university policy allows.
+  \item Download an attendance summary when authorized.
+\end{itemize}
+
+\subsection{Assignments and Study Materials}
+\begin{itemize}
+  \item View active, upcoming, submitted, late, graded, and missed assignments.
+  \item Read instructions and rubrics; upload permitted file types before the deadline.
+  \item Save a draft, replace a submission before lock, and receive a submission receipt.
+  \item Track status, marks, rubric outcome, teacher feedback, and resubmission permission.
+  \item Browse and download course materials organized by subject, unit, topic, and date.
+  \item Preserve access rules so students only see materials for eligible course offerings.
+\end{itemize}
+
+\subsection{Examinations, Results, and Academic Record}
+\begin{itemize}
+  \item View examination schedule, venue, instructions, eligibility, and hall ticket.
+  \item Submit exam applications for regular, supplementary, improvement, or other permitted categories.
+  \item Track application, approval, payment, and hall-ticket status.
+  \item View only published component marks, final marks, grades, SGPA, CGPA, credits,
+        result status, and arrear information.
+  \item Download grade cards and permitted academic transcripts with verification details.
+  \item Apply for revaluation, scrutiny, or grade review within policy dates and track outcomes.
+  \item Receive notification when results are published or revised.
+\end{itemize}
+
+\subsection{Surveys, Notifications, Search, Library, and Support}
+\begin{itemize}
+  \item Complete assigned course, faculty, programme, or institutional surveys.
+  \item View targeted announcements, notices, events, deadlines, and emergency messages.
+  \item Search own courses, materials, notices, faculty contacts, and public academic information.
+  \item Search OPAC, view availability, reserve books, renew eligible loans,
+        and view issue history, due dates, and fines.
+  \item Access help articles, process guides, FAQs, and support-request tracking.
+\end{itemize}
+
+\newpage
+\section{Shared End-to-End Workflows}
+
+\subsection{Course Offering and Registration}
+\begin{enumerate}
+  \item Admin prepares curriculum, semester, course offering, capacity, faculty, and schedule.
+  \item System validates prerequisites, clashes, credit limits, and programme eligibility.
+  \item Student registers or Admin performs authorized bulk registration.
+  \item Required approvals are routed to the designated academic authority.
+  \item Confirmed registration becomes visible to the teacher and student's timetable.
+  \item Every add/drop/withdrawal is effective-dated and retained in history.
+\end{enumerate}
+
+\subsection{Attendance}
+\begin{enumerate}
+  \item Published timetable creates eligible class sessions.
+  \item Teacher records attendance for the assigned class and submits it.
+  \item System updates student/course percentages and identifies shortage risk.
+  \item Student can view the published record.
+  \item Post-lock corrections require a request, approval, and audit entry.
+\end{enumerate}
+
+\subsection{Evaluation and Result Publication}
+\begin{enumerate}
+  \item Admin or authorized teacher configures components, exams, weights, and grade rules.
+  \item Teacher enters and validates marks for assigned students.
+  \item System tracks completion and flags missing or invalid entries.
+  \item Authorized reviewers moderate, approve, apply policy-based grace marks, and lock records.
+  \item Exam authority assigns/finalizes grades and publishes results.
+  \item Student sees the published result; later changes create a new auditable version.
+\end{enumerate}
+
+\subsection{Assignment Submission}
+\begin{enumerate}
+  \item Teacher creates and releases an assignment to an eligible course group.
+  \item Student submits work and receives a dated confirmation.
+  \item Teacher evaluates, records marks and feedback, and publishes the outcome.
+  \item Student reviews feedback; authorized resubmission retains previous submission history.
+\end{enumerate}
+
+\subsection{Survey}
+\begin{enumerate}
+  \item Admin creates a survey and defines audience, anonymity, and dates.
+  \item System notifies eligible participants and sends reminders.
+  \item Participants submit responses; duplicate submissions are prevented.
+  \item Admin reviews participation and aggregated results according to privacy rules.
+\end{enumerate}
+
+\section{Reports and Outputs}
+
+\begin{longtable}{>{\bfseries}p{3.7cm} p{5.4cm} p{6.8cm}}
+\toprule
+Report family & Typical users & Key outputs \\
+\midrule
+\endfirsthead
+\toprule
+Report family & Typical users & Key outputs \\
+\midrule
+\endhead
+Student & Admin, authorized teacher, student (own) &
+Profile, registration, attendance, marks, grades, credits, progression, arrears. \\
+Staff & Admin, department authority, employee (own) &
+Profile, allocation, workload, timetable, attendance/mark-entry completion. \\
+Attendance & Admin, teacher, student (own) &
+Daily status, student/course summary, shortage, missing entry, correction history. \\
+Course offering & Admin, teacher &
+Capacity, enrolment, faculty allocation, rooms, conflicts, registration exceptions. \\
+Marks and grades & Exam/admin, teacher, student (published own) &
+Components, totals, distributions, pass percentage, entry status, changes, moderation. \\
+Arrears and performance & Exam/admin, authorized teacher, student (own) &
+Student-wise arrears, course-wise arrears, arrear counts, performance analysis. \\
+Grace marks & Authorized exam/admin &
+Rule applied, beneficiaries, before/after values, approver, audit history. \\
+Survey & Authorized admin &
+Participation, not-submitted users where permitted, aggregate response analysis. \\
+Library & Library admin, user (own) &
+Circulation, overdue, inventory, utilization, loan history, reservations, fines. \\
+Audit and security & Authorized system admin &
+Login, permission, sensitive changes, approvals, exports, integration failures. \\
+\bottomrule
+\end{longtable}
+
+All exports should include report title, filters, generated time, generated-by user,
+data scope, and page/file integrity information where appropriate.
+
+\section{Notifications and Communication Events}
+
+\begin{itemize}
+  \item Account activation, password/security events, and profile-verification requests.
+  \item Course registration opening, approval, rejection, add/drop, and timetable changes.
+  \item Pending/missing attendance, attendance shortage, and correction decisions.
+  \item Assignment release, approaching deadline, submission receipt, grading, and feedback.
+  \item Examination schedule, hall ticket, eligibility, application, and venue changes.
+  \item Mark-entry deadlines, result publication, revaluation decisions, and grade changes.
+  \item Library due/overdue, reservation availability, renewal, and fine notifications.
+  \item Survey invitation/reminder and campus/department/course announcements.
+\end{itemize}
+
+\section{Non-Functional Requirements}
+
+\subsection{Security and Privacy}
+\begin{itemize}
+  \item Backend-enforced authorization, secure sessions, HTTPS, explicit CORS,
+        input validation, rate limiting, and secure secret management.
+  \item Least-privilege data access; students access only their own records,
+        teachers access assigned academic scopes, and admins access permitted domains.
+  \item Protection of personal, academic, examination, and audit data in storage and transit.
+  \item Configurable retention and access logs for sensitive reports and exports.
+\end{itemize}
+
+\subsection{Usability and Accessibility}
+\begin{itemize}
+  \item Responsive layouts, keyboard operation, visible focus, labelled controls,
+        readable contrast, scalable text, and clear validation messages.
+  \item Consistent design system across dashboards, tables, forms, filters, dialogs, and reports.
+  \item Search, filters, sorting, pagination, bulk actions, and exports for high-volume pages.
+\end{itemize}
+
+\subsection{Performance and Reliability}
+\begin{itemize}
+  \item Paginated APIs, optimized database indexes, caching for stable reference data,
+        and background processing for large exports and notifications.
+  \item Idempotent submissions where duplicate academic operations would be harmful.
+  \item Monitoring, structured logs, health checks, backup verification, and recovery procedures.
+\end{itemize}
+
+\section{Integration Scope}
+
+\begin{itemize}
+  \item Institutional identity/SSO and directory services.
+  \item Existing library platform and OPAC.
+  \item Email, SMS, and push notification providers.
+  \item Payment gateway for exam or other approved academic fees.
+  \item Learning Management System, digital content, or video platforms where approved.
+  \item HR, admissions, finance, and alumni platforms through governed APIs or imports.
+  \item Calendar feeds and document-verification services.
+\end{itemize}
+
+Integrations should use documented APIs, environment-specific credentials,
+retry policies, monitoring, and reconciliation reports. Direct uncontrolled
+database coupling should be avoided.
+
+\newpage
+\section{Implementation Priority}
+
+\subsection{Phase 1 - Foundation and Core Records}
+\begin{itemize}
+  \item Authentication, SSO readiness, roles, permissions, audit logging, and user profiles.
+  \item University masters, staff, students, programmes, courses, batches, subjects, and curriculum.
+  \item Academic calendar, course offerings, registration, and timetable.
+  \item Shared notifications, search, file handling, and reporting framework.
+\end{itemize}
+
+\subsection{Phase 2 - Teaching and Assessment}
+\begin{itemize}
+  \item Attendance capture, corrections, shortage monitoring, and reports.
+  \item Assignments, submissions, feedback, and study materials.
+  \item Evaluation components, mark entry, grade rules, locking, and completion tracking.
+\end{itemize}
+
+\subsection{Phase 3 - Examination and Student Outcomes}
+\begin{itemize}
+  \item Examination schedules, applications, hall tickets, duties, and eligibility.
+  \item Grade assignment, grace-mark governance, arrears, results, grade cards,
+        revaluation, and performance reports.
+\end{itemize}
+
+\subsection{Phase 4 - Library, Survey, and Institutional Scale}
+\begin{itemize}
+  \item Library/OPAC integration, survey management, advanced analytics, and additional integrations.
+  \item Accessibility review, security testing, performance validation, backup drills,
+        pilot rollout, training, and production launch.
+\end{itemize}
+
+\section{Acceptance Baseline}
+
+A feature should be considered ready only when:
+\begin{itemize}
+  \item user stories and permission rules are approved by the responsible university owner;
+  \item frontend and backend builds pass, database migrations are reviewed, and automated tests pass;
+  \item validation, loading, empty, success, failure, and retry behavior are complete;
+  \item audit events exist for sensitive operations;
+  \item responsive, keyboard, accessibility, and supported-browser behavior is verified;
+  \item reports and notifications affected by the feature are updated;
+  \item manual smoke tests and user-acceptance steps are documented; and
+  \item no mock data, debug text, embedded secrets, or unauthorized data exposure remains.
+\end{itemize}
+
+\section{Reference Alignment with Existing AUMS}
+
+The supplied screenshots confirm that the existing AUMS includes or exposes
+navigation for the following functions. These capabilities have been retained
+in the proposed scope and reorganized into modern role-based workflows:
+
+\begin{itemize}
+  \item \textbf{Academics:} Stem Chart, Print Staff Timetable, View Staff Timetable.
+  \item \textbf{Evaluation:} Create Component, Create Exam, Mark Entry, Class Grade Rule,
+        Assign Grade, Change Grade, Class Grade Reports, Classwise Student Reports,
+        Attendance Reports, Track Registration of Student, Grade Mark Category Detail,
+        Apply Grace Mark.
+  \item \textbf{Exam Admin:} Mark/Grade Entry Status, Student Wise Arrear Report,
+        Course Wise Arrear Report, Number of Arrears Report, Performance Analysis Report.
+  \item \textbf{Survey:} Survey Not Submitted Users Report.
+  \item \textbf{Reports:} Student, Staff, Attendance, Course Offering, Mark, Grade,
+        and Grace Mark report families.
+  \item \textbf{Personal:} Upload Photo, Update Account, View Profile, My Profile.
+  \item \textbf{Additional navigation:} Dashboard, Course Admin, Attendance, Search,
+        Library, OPAC, Help, and Exam Application.
+\end{itemize}
+
+\begin{scopebox}
+\textbf{Stakeholder review request.} Confirm which legacy features are mandatory
+for the first production release, which require process changes, and which may
+be retired. Also confirm permission owners for mark entry, grade assignment,
+grade changes, grace marks, result publication, attendance correction, and
+sensitive reports.
+\end{scopebox}
+
+\vfill
+\begin{center}
+\small\color{TextGray}
+UMS Feature Documentation - functional baseline for review and phased delivery.
+\end{center}
+
+\end{document}

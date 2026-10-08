@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: ums-api
+    env: docker
+    plan: free
+    dockerfilePath: ./Backend/UMS.Api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Jwt__Issuer
+        value: UMS
+      - key: Jwt__Audience
+        value: UMS-Frontend
+      - key: Jwt__Key
+        sync: false
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false

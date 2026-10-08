@@ -1,0 +1,1436 @@
+\documentclass[12pt,a4paper]{report}
+
+% ===== PACKAGES =====
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{times}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% ===== HYPERREF SETUP =====
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% ===== CODE LISTING STYLE =====
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red!70!black},
+    numberstyle=\tiny\color{gray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=8pt,
+    backgroundcolor=\color{gray!5},
+    frame=single,
+    rulecolor=\color{gray!40},
+    breaklines=true,
+    breakatwhitespace=false,
+    captionpos=b,
+    showspaces=false,
+    showstringspaces=false,
+    tabsize=2,
+    language=C++
+}
+
+% ===== HEADER/FOOTER =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small IoT Based Smart Event Management System}
+\fancyhead[R]{\small Amrita Vishwa Vidyapeetham}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ===== TITLE FORMATTING =====
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries}{\chaptertitlename\ \thechapter}{18pt}{\Large}
+\titlespacing*{\chapter}{0pt}{30pt}{20pt}
+
+% ===== SPACING =====
+\onehalfspacing
+
+% =====================================================================
+%                          DOCUMENT BEGIN
+% =====================================================================
+\begin{document}
+
+% ===== TITLE PAGE =====
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+
+\vspace*{0.5cm}
+{\LARGE \textbf{IoT-Based Smart Event Management and Automated Coordination System}}
+
+\vspace{1.2cm}
+{\large A Project Report}
+
+\vspace{0.4cm}
+Submitted to the Amrita Vishwa Vidyapeetham
+
+\vspace{0.2cm}
+in partial fulfillment of requirements for the award of credits for subjects
+
+\vspace{0.4cm}
+\textbf Introduction to Electronics (23ECE113) and Introduction to Internet of Things (23AID212)
+\vspace{0.4cm}
+Bachelor of Technology
+
+\vspace{0.1cm}
+in
+
+\vspace{0.1cm}
+Artificial Intelligence and Data Science
+
+\vspace{1cm}
+By
+
+\vspace{0.5cm}
+\begin{tabular}{ll}
+Vansh Kumar Singh & (DL.AI.U4AID25054) \\
+Rakshit Guria & (DL.AI.U4AID25040) \\
+Gireesh Yadav & (DL.AI.U4AID25021) \\
+Nachiket Banerjee & (DL.AI.U4AID25034) \\
+\end{tabular}
+
+\vspace{1.5cm}
+\includegraphics[width=4cm]{amrita_logo.png}
+
+\vspace{0.5cm}
+\textbf{School of Artificial Intelligence}
+
+\textbf{Amrita Vishwa Vidyapeetham}
+
+\textbf{Faridabad}
+
+\vspace{0.3cm}
+2026--2027
+
+\end{center}
+\end{titlepage}
+
+% ===== CERTIFICATE =====
+\addcontentsline{toc}{chapter}{Certificate}
+
+\begin{center}
+\textbf{School of Artificial Intelligence \hfill 2026--27} \hfill Amrita Vishwa Vidyapeetham, Faridabad 
+
+\vspace{1cm}
+\includegraphics[width=3.5cm]{amrita_logo.png}
+
+\vspace{0.5cm}
+\textbf{\Large CERTIFICATE}
+\end{center}
+
+\vspace{0.8cm}
+
+This is to certify that the report entitled \textbf{IoT-Based Smart Event Management and Automated Coordination System} submitted by Vansh Kumar Singh (DL.AI.U4AID25054), Rakshit Guria (DL.AI.U4AID25040), Gireesh Yadav (DL.AI.U4AID25021) \& Nachiket Banerjee (DL.AI.U4AID25034) to the School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Faridabad in partial fulfillment of the B.Tech.\ degree in Artificial Intelligence and Data Science is a bonafide record of the project work carried out by them under our guidance and supervision. This report in any form has not been submitted to any other University or Institute for any purpose.
+
+\vspace{2cm}
+\begin{tabular}{p{7cm} >{\raggedleft\arraybackslash}p{7cm}}
+
+Dr.\ Abhishek Kumar & Dr.\ Lakshmi Mohandas \\
+(Project Guide — IE and IoT) & Principal, School of AI \\
+Amrita Vishwa Vidyapeetham & Amrita Vishwa Vidyapeetham \\
+Faridabad & Faridabad \\
+
+\end{tabular}
+
+\newpage
+
+% ===== DECLARATION =====
+\chapter*{Declaration}
+\thispagestyle{fancy}
+\addcontentsline{toc}{chapter}{Declaration}
+
+We hereby declare that the project report titled \textbf{IoT-Based Smart Event Management and Automated Coordination System}, submitted for partial fulfillment of the requirements for the award of the degree of Bachelor of Technology of the School of AI, Amrita Vishwa Vidyapeetham, Faridabad, India is a bonafide work done by us under supervision of Dr.\ Abhishek Kumar. This submission represents our ideas in our own words and where ideas or words of others have been included, we have adequately and accurately cited and referenced the original sources.
+
+We also declare that we have adhered to the ethics of academic honesty and integrity and have not misrepresented or fabricated any data, idea, fact, or source in our submission. We understand that any violation of the above will be a cause for disciplinary action by the institute and/or the University. This report has not previously formed the basis for the award of any degree, diploma or similar title of any other University.
+
+\vspace{1.5cm}
+Vansh Kumar Singh (DL.AI.U4AID25054)
+
+Rakshit Guria (DL.AI.U4AID25040)
+
+Gireesh Yadav (DL.AI.U4AID25021)
+
+Nachiket Banerjee (DL.AI.U4AID25034)
+
+\vspace{1cm}
+Faridabad
+
+03-06-2026
+
+\newpage
+
+\chapter*{Abstract}
+\thispagestyle{fancy}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This project presents an \textbf{IoT-Based Smart Event Management and Automated Coordination System} designed to automate attendee entry, monitor crowd conditions, and enforce venue capacity using an integrated hardware-software approach. The system is suitable for applications such as college fests, conferences, and public events where manual coordination is inefficient and error-prone.
+
+\textbf{Electronics Layer — Introduction to Electronics (23ECE113):}  
+The hardware system is built using an ESP32 microcontroller interfaced with multiple electronic components. An MFRC522 RFID module enables identity-based authentication, while an HC-SR04 ultrasonic sensor detects physical presence to prevent tailgating. A servo motor is used as a gate control mechanism to allow or deny entry based on system conditions. A DHT11 sensor monitors environmental parameters such as temperature and humidity. Additionally, red and green LEDs provide real-time visual feedback to users. The circuit design was simulated using Wokwi and validated using LTSpice to ensure proper electrical behavior.
+
+\textbf{IoT Layer — Introduction to Internet of Things (23AID212):}  
+The system incorporates intelligent decision-making by combining sensor inputs to automate entry control and crowd management. A dual-layer validation mechanism ensures both identity verification and physical presence detection, reducing unauthorized access. The system maintains a real-time attendee count and enforces a predefined capacity limit by restricting further entry once the threshold is reached. Environmental monitoring enables detection of unsafe conditions, supporting proactive safety measures. Future enhancements include cloud integration using platforms like ThingSpeak, enabling remote monitoring, data logging, and real-time notifications.
+
+The overall system provides a low-cost, scalable, and efficient solution for smart event management, with an estimated implementation cost of approximately Rs.~900.
+
+% ===== ACKNOWLEDGEMENT =====
+\chapter*{Acknowledgement}
+\thispagestyle{fancy}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+
+We would like to express our sincere gratitude to Dr.\ Abhishek Kumar for his valuable guidance, encouragement, and constant support throughout this project. His insights and constructive feedback played a vital role in its successful completion.
+
+We are also thankful to all faculty members and staff of the School of Artificial Intelligence and Data Science, Amrita Vishwa Vidyapeetham, Faridabad, for providing a supportive environment and necessary resources.
+
+Our heartfelt appreciation goes to our teammates and classmates for their collaboration and motivation at various stages of the project.
+
+Lastly, we thank our families for their continuous moral support and encouragement, without which this journey would not have been possible.
+
+\newpage
+
+% ===== LIST OF SYMBOLS =====
+\chapter*{List of Symbols}
+\thispagestyle{fancy}
+\addcontentsline{toc}{chapter}{List of Symbols}
+
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$^\circ$C & Degrees Celsius \\
+cm & Centimetre (distance unit for ultrasonic sensor) \\
+ms & Millisecond \\
+Hz & Hertz \\
+V & Volt \\
+mA & Milliampere \\
+$\Omega$ & Ohm \\
+k$\Omega$ & Kiloohm (1000 ohms) \\
+GPIO & General Purpose Input/Output (ESP32 pin) \\
+IoT & Internet of Things \\
+RFID & Radio Frequency Identification \\
+UID & Unique Identifier (RFID card ID) \\
+SPI & Serial Peripheral Interface (MFRC522 protocol) \\
+PWM & Pulse Width Modulation (servo motor control) \\
+ADC & Analog to Digital Converter \\
+RH & Relative Humidity \\
+SDA & Serial Data Line (SPI) \\
+SCK & Serial Clock (SPI) \\
+MOSI & Master Out Slave In (SPI) \\
+MISO & Master In Slave Out (SPI) \\
+RST & Reset Pin \\
+ThingSpeak & IoT cloud platform for data visualisation \\
+API & Application Programming Interface \\
+\bottomrule
+\end{tabular}
+
+\newpage
+
+% ===== TABLE OF CONTENTS =====
+\tableofcontents
+\newpage
+
+% ===== LIST OF FIGURES =====
+\listoffigures
+\newpage
+
+% ===== LIST OF TABLES =====
+\listoftables
+\newpage
+
+% =====================================================================
+%                        CHAPTER 1: INTRODUCTION
+% =====================================================================
+\chapter{Introduction}
+
+This chapter provides an overview of the IoT-Based Smart Event Management and Automated Coordination System --- what problem it solves, what it aims to do, and where it can be used.
+
+% ============================================================
+% I. LITERATURE SURVEY
+% ============================================================
+\section{Literature Survey}
+
+IoT-based event management and access control systems have gained significant research attention in recent years due to their ability to improve efficiency, security, and user experience. Below is a summary of key related works:
+
+\begin{itemize}[leftmargin=*]
+
+\item \textbf{CircuitDigest (2021)~\cite{circuitdigest2021}} presented an IoT-based event management system using NodeMCU and RFID technology. Their system demonstrated real-time attendee tracking and automated entry logging. However, it lacked integrated environmental monitoring and advanced crowd analytics.
+
+\item \textbf{Kumar et al.\ (2021)~\cite{kumar2021}} proposed an RFID-based IoT event management framework focusing on secure authentication and centralized database logging. While effective in access control, their work did not incorporate physical gate automation or real-time sensor-based validation.
+
+\item \textbf{Sharma et al.\ (2021)~\cite{sharma2021}} developed an IoT-enabled smart event system emphasizing scalability and remote monitoring through cloud platforms. Their system highlighted the importance of real-time data synchronization but lacked hardware-level crowd control mechanisms.
+
+\item \textbf{Libelium (2022)~\cite{libelium2022}} demonstrated a commercial IoT solution for smart event management, integrating sensors, wireless communication, and analytics dashboards. Their study showed improved visitor experience and operational efficiency but involved high deployment costs, making it less suitable for low-budget implementations.
+
+\item \textbf{IJCST (2020)~\cite{ijcst2020}} explored RFID-based entry systems for secure access management in public events. The study confirmed that RFID significantly reduces manual errors and improves entry speed, though it did not address environmental safety or multi-sensor integration.
+
+\end{itemize}
+
+\section{Cloud Integration Overview}
+
+This project uses ThingSpeak as its planned cloud backend for future integration. ThingSpeak is an open-source IoT platform that enables real-time data collection, visualisation, and analysis. For this system:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Real-time Dashboard:} Attendee count, entry/exit events, temperature, humidity, and gate status streamed live to a cloud dashboard.
+    \item \textbf{Capacity Alerts:} ThingSpeak React app triggers SMS or email notification when venue capacity reaches 80\% (warning) and 100\% (full/locked).
+    \item \textbf{Historical Analysis:} Time-stamped entry logs enable post-event analysis of crowd flow patterns and peak entry times.
+    \item \textbf{Environmental Logging:} Continuous DHT11 data stream enables review of temperature and humidity trends throughout the event.
+    \item \textbf{Multi-Gate Architecture:} Multiple ESP32 gate units can write to separate ThingSpeak channels for large venues with multiple entry points.
+\end{itemize}
+
+\section{Need for This Project}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Manual Entry Management is Error-Prone:} College fests and conferences still rely on manual headcounts, paper registers, and volunteer-managed gates. These methods are inaccurate, slow, and unscalable.
+    \item \textbf{No Capacity Enforcement:} Events regularly exceed safe occupancy limits because no automated system exists to physically stop entry when capacity is reached.
+    \item \textbf{Tailgating and Unauthorised Entry:} A single card scan without physical gate control allows multiple people to enter on one valid credential.
+    \item \textbf{No Environmental Safety Monitoring:} Organisers have no real-time visibility into temperature or humidity levels, which are critical safety indicators for dense crowd environments.
+    \item \textbf{Affordability Gap:} Commercial event management hardware costs Rs.~10,000--50,000+. Student events and small organisations cannot afford these solutions.
+    \item \textbf{No Real-Time Data for Organisers:} Event coordinators have no live dashboard showing current attendee count, entry rate, or venue conditions.
+\end{enumerate}
+
+\section{Key Objectives}
+
+\begin{itemize}[leftmargin=*]
+    \item Implement RFID-based identity verification for all event attendees using MFRC522 and pre-registered card UIDs.
+    \item Implement HC-SR04 ultrasonic proximity detection to confirm physical presence and prevent tailgating.
+    \item Control a servo motor gate that opens only on successful dual-layer validation (valid RFID + presence confirmed).
+    \item Enforce configurable maximum capacity and automatically lock the gate when the limit is reached.
+    \item Monitor venue temperature and humidity in real time using DHT11 with threshold-based warning alerts.
+    \item Provide instant visual feedback via green (entry granted) and red (entry denied) LEDs.
+    \item Maintain a live attendee count with entry and exit tracking.
+    \item Validate the circuit using Wokwi functional simulation and LTSpice electrical analysis.
+    \item Provide a foundation for future WiFi-based ThingSpeak cloud integration.
+\end{itemize}
+
+\section{Applications}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{College Fests and Cultural Events:} Automated entry management replacing manual volunteer-operated gates.
+    \item \textbf{Academic Conferences:} RFID-based delegate check-in with session access control.
+    \item \textbf{Examination Halls:} Authorised student entry only, with capacity monitoring.
+    \item \textbf{Corporate Events:} Employee or visitor access control with real-time count dashboard.
+    \item \textbf{Sports Events:} Stadium entry with section-wise capacity enforcement.
+    \item \textbf{Concerts and Public Gatherings:} Crowd safety monitoring through integrated environmental sensing.
+    \item \textbf{Hostel Entry Systems:} Resident-only access with entry logging.
+\end{itemize}
+
+% =====================================================================
+%                   CHAPTER 2: EXISTING TECHNOLOGY
+% =====================================================================
+\chapter{Existing Technology}
+
+\section{Existing Technologies}
+
+This section reviews four existing solutions for event entry management and crowd monitoring, examining the advantages and limitations of each.
+
+\subsection{Commercial RFID Access Control Systems (HID Global / ZKTeco)}
+
+Commercial RFID-based access control systems are widely deployed in corporate offices and large institutions. They offer high reliability and integration with HR and attendance software.
+
+\textbf{Advantages:}
+\begin{itemize}[leftmargin=*]
+    \item Factory-calibrated hardware with certified reliability and long operational life.
+    \item Integration with enterprise software for automated attendance reports and payroll.
+    \item Cloud-based remote management with role-based access configuration.
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=*]
+    \item Cost ranges from Rs.~8,000 to Rs.~50,000+ per unit, making them completely inaccessible for student-run events or small organisations.
+    \item No built-in environmental monitoring --- temperature, humidity, and crowd safety are not addressed.
+    \item Proprietary systems with no open customisation --- features cannot be modified for event-specific needs.
+\end{itemize}
+
+\subsection{Manual Volunteer-Based Entry Management}
+
+The most common approach at college events is to station volunteers at entry gates to check ID cards, count attendees, and manage queues.
+
+\textbf{Advantages:}
+\begin{itemize}[leftmargin=*]
+    \item Zero hardware cost and no technical setup required.
+    \item Human judgment handles exceptions that automated systems may miss.
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=*]
+    \item No real-time capacity enforcement --- volunteers lose count during high entry-rate periods.
+    \item High error rate during peak entry times; tailgating and credential sharing are common.
+    \item No data generated --- post-event analysis of attendance patterns is impossible.
+    \item No environmental monitoring capability.
+\end{itemize}
+
+\subsection{IoT Academic Prototypes (Single-Parameter)}
+
+Various academic projects have implemented either RFID-based attendance systems or crowd counting using IR or ultrasonic sensors, but almost always as separate, single-function devices.
+
+\textbf{Advantages:}
+\begin{itemize}[leftmargin=*]
+    \item Low cost (under Rs.~500--800 per prototype) using off-the-shelf modules.
+    \item Open-source designs freely available and adaptable.
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=*]
+    \item Single parameter only: either RFID \textit{or} counting \textit{or} environment --- not combined.
+    \item No physical gate control --- the system only reads and logs; it does not enforce access.
+    \item No capacity limits or automatic lockout implemented.
+    \item No environmental safety monitoring integrated.
+\end{itemize}
+
+\subsection{QR Code Scanning Apps}
+
+Smartphone-based QR code scanning apps (e.g., Eventbrite, Townscript) have gained popularity for event check-in. An organiser scans a unique QR code from each attendee's phone.
+
+\textbf{Advantages:}
+\begin{itemize}[leftmargin=*]
+    \item No dedicated hardware required beyond a smartphone.
+    \item Digital ticket distribution and attendee registration built in.
+\end{itemize}
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=*]
+    \item Requires internet connectivity for both organisers and attendees.
+    \item Screenshot sharing enables unlimited credential duplication --- no physical gate stops unauthorised entry.
+    \item No capacity enforcement hardware --- app count is advisory, not enforced.
+    \item No environmental monitoring.
+\end{itemize}
+
+\section{How This Project Resolves These Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Affordability:} Full system at approximately Rs.~900 --- over 10$\times$ cheaper than the cheapest commercial alternative.
+    \item \textbf{Dual-Layer Entry Validation:} RFID confirms identity; ultrasonic confirms physical presence --- the only prototype combining both into one gate system.
+    \item \textbf{Physical Gate Control:} Servo motor gate enforces access at hardware level --- no software-only workaround can bypass it.
+    \item \textbf{Automatic Capacity Enforcement:} Gate locks autonomously when maximum headcount is reached --- no human intervention required.
+    \item \textbf{Environmental Safety:} DHT11 integration provides real-time temperature and humidity monitoring alongside crowd management.
+    \item \textbf{Open and Customisable:} Arduino/ESP32 firmware is fully open and modifiable for any event type or configuration.
+\end{itemize}
+
+% =====================================================================
+%                   CHAPTER 3: WORKING PRINCIPLE
+% =====================================================================
+\chapter{Working Principle}
+
+\section{Hardware Requirements}
+
+Table~\ref{tab:hardware} lists all hardware components with specifications and estimated cost.
+
+\begin{table}[h!]
+\centering
+\caption{Detailed Hardware Components with Specifications}
+\label{tab:hardware}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{3.5cm}|p{1.2cm}|p{8.5cm}|}
+\hline
+\textbf{Component} & \textbf{Cost} & \textbf{Specifications} \\
+\hline
+
+ESP32-WROOM-32 & Rs.~380 & Dual-core LX6 · 240\,MHz · WiFi 802.11 b/g/n · BT 4.2 · 34 GPIO · 12-bit ADC · 3.3\,V logic \\
+\hline
+
+MFRC522 RFID Module & Rs.~150 & 13.56\,MHz · SPI interface · Read range up to 5\,cm · 3.3\,V · UID-based card authentication \\
+\hline
+
+HC-SR04 Ultrasonic & Rs.~80 & 5\,V DC · Range: 2--400\,cm · Trigger/Echo interface · Resolution: 0.3\,cm · $<$15\,mA \\
+\hline
+
+DHT11 Sensor & Rs.~120 & 3.3--5\,V · $-$40 to 80$^\circ$C · 0--100\% RH · $\pm$0.5$^\circ$C · $\pm$2\% RH · 1-wire digital \\
+\hline
+
+Servo Motor (SG90) & Rs.~70 & 5\,V DC · 0--180$^\circ$ rotation · PWM control · 4.8\,V stall torque: 1.8\,kg$\cdot$cm \\
+\hline
+
+Red LED (5\,mm) & Rs.~2 & $\sim$2\,V forward · $\sim$20\,mA · 220\,$\Omega$ series resistor \\
+\hline
+
+Green LED (5\,mm) & Rs.~2 & $\sim$2\,V forward · $\sim$20\,mA · 220\,$\Omega$ series resistor \\
+\hline
+
+Resistors 220\,$\Omega$ & Rs.~3 & Carbon film · 5\% tolerance · LED current limiting (2 pcs) \\
+\hline
+
+Breadboard + Wires & Rs.~150 & 830-pt solderless · M--M and M--F jumper wires \\
+\hline
+
+USB to Type-C Cable & Rs.~80 & Power and programming \\
+\hline
+
+\textbf{Total Estimated} & \textbf{Rs.~\textasciitilde900} & \\
+\hline
+
+\end{tabular}
+\end{table}
+
+\section{System Thresholds and Parameters}
+
+Table~\ref{tab:thresholds} defines all configurable system parameters and their justifications.
+
+\begin{table}[h!]
+\centering
+\caption{System Parameter Thresholds with Justification}
+\label{tab:thresholds}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{3cm}|p{2.2cm}|p{2.2cm}|p{2.2cm}|p{3.5cm}|}
+\hline
+\textbf{Parameter} & \textbf{Normal} & \textbf{Warning} & \textbf{Locked/Alert} & \textbf{Basis} \\
+\hline
+
+Attendee Count & $<$ MAX & $\geq$80\% of MAX & $=$ MAX & Configurable (default: 100) \\
+\hline
+
+Proximity (HC-SR04) & $>$30\,cm & 10--30\,cm & $<$10\,cm & Physical presence detection zone \\
+\hline
+
+Temperature (DHT11) & 20--28$^\circ$C & $>$28$^\circ$C & $>$35$^\circ$C & WHO indoor event guideline  \\
+\hline
+
+Humidity (DHT11) & 30--60\% RH & $>$60\% RH & $>$70\% RH & WHO indoor guideline  \\
+\hline
+
+RFID Validation & UID matched & --- & UID not in list & Pre-registered attendee database \\
+\hline
+
+Gate State & Closed & --- & Open (3\,s) & Servo 0$^\circ$ = closed; 90$^\circ$ = open \\
+\hline
+
+\end{tabular}
+\end{table}
+\section{Working Specifications and Principal Components}
+
+\subsection*{System Operation Flow}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Boot Initialisation:} ESP32 initialises all peripherals, sets servo to closed position (0$^\circ$), starts serial monitor at 115,200 baud, and loads registered RFID UID whitelist into memory.
+    \item \textbf{Continuous Sensor Loop:} DHT11 reads temperature and humidity every 2 seconds. HC-SR04 pings every 100\,ms. RFID reader polls for card presence continuously.
+    \item \textbf{Entry Request Triggered:} When MFRC522 detects a card, it reads and extracts the UID.
+    \item \textbf{RFID Validation:} UID is compared against the whitelist array. If not found, red LED activates and gate remains closed.
+    \item \textbf{Presence Confirmation:} If RFID is valid, HC-SR04 checks distance. If a person is detected within 30\,cm, entry validation passes. If no physical presence, entry is denied (anti-tailgate protection).
+    \item \textbf{Capacity Check:} System checks if current count $<$ MAX\_CAPACITY. If at capacity, red LED activates regardless of RFID validity.
+    \item \textbf{Gate Operation:} On successful validation (RFID valid + presence confirmed + below capacity), servo rotates to 90$^\circ$ (open), green LED activates. After 3 seconds, servo returns to 0$^\circ$ (closed).
+    \item \textbf{Count Update:} Attendee counter increments. Serial monitor prints updated count and event log.
+    \item \textbf{Environmental Monitoring:} Parallel task continuously checks DHT11 readings against thresholds and prints warnings to serial monitor when exceeded.
+\end{enumerate}
+
+\subsection*{Principal Component Descriptions}
+
+\begin{enumerate}[leftmargin=*]
+
+\item \textbf{ESP32-WROOM-32:} The processing core of the system. It runs the main event loop --- polling the RFID reader via SPI, triggering the HC-SR04, reading DHT11 via 1-wire, executing the three-condition validation logic, driving the servo via PWM, and controlling LEDs. Its onboard WiFi module enables future ThingSpeak integration without hardware modification.
+
+\item \textbf{MFRC522 RFID Reader:} Communicates with ESP32 over SPI (VSPI bus). It operates at 13.56\,MHz and reads ISO 14443A/MIFARE cards. Each card has a unique 4-byte UID. The system stores a whitelist of valid UIDs in firmware; only matching UIDs pass the first validation layer.
+
+\item \textbf{HC-SR04 Ultrasonic Sensor:} Sends a 40\,kHz ultrasonic burst on the TRIG pin and measures the time for the echo to return on the ECHO pin. Distance is calculated as:
+\[
+d = \frac{t_{\text{echo}} \times 340}{2 \times 10000} \text{ cm}
+\]
+where $t_{\text{echo}}$ is in microseconds and 340\,m/s is the speed of sound. A detection threshold of 30\,cm confirms a person is physically present at the gate.
+
+\item \textbf{DHT11 Sensor:} Measures ambient temperature and humidity via a single 1-wire digital interface on GPIO 4. Positioned away from the servo motor to avoid heat interference. Readings below 0 or \texttt{isnan()} are flagged as sensor errors.
+
+\item \textbf{SG90 Servo Motor:} Controlled by PWM signal from GPIO 13. Rotates between 0$^\circ$ (gate closed) and 90$^\circ$ (gate open). The Arduino \texttt{Servo.h} library generates the 50\,Hz PWM signal with the appropriate pulse width for each angle.
+
+\item \textbf{Green LED:} Activates on entry granted --- valid RFID + presence confirmed + below capacity. Driven from GPIO 26 through 220\,$\Omega$ resistor.
+
+\item \textbf{Red LED:} Activates on entry denied --- invalid RFID, no physical presence, or at capacity. Driven from GPIO 27 through 220\,$\Omega$ resistor.
+
+\end{enumerate}
+
+\section{Pin Connection Summary}
+
+Table~\ref{tab:pins} lists all component-to-ESP32 pin connections.
+
+\begin{table}[h!]
+\centering
+\caption{Pin Connection Summary}
+\label{tab:pins}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{1.8cm}|p{3.5cm}|}
+\hline
+\textbf{Component} & \textbf{Connection (Comp. $\rightarrow$ ESP32)} & \textbf{Signal} & \textbf{Notes} \\
+\hline
+
+MFRC522 RFID & SDA $\rightarrow$ GPIO 5 & SPI CS & VSPI bus \\
+\hline
+& SCK $\rightarrow$ GPIO 18 & SPI CLK & \\
+\hline
+& MOSI $\rightarrow$ GPIO 23 & SPI MOSI & \\
+\hline
+& MISO $\rightarrow$ GPIO 19 & SPI MISO & \\
+\hline
+& RST $\rightarrow$ GPIO 22 & Reset & \\
+\hline
+& VCC $\rightarrow$ 3.3\,V & Power & 3.3\,V only \\
+\hline
+
+HC-SR04 & TRIG $\rightarrow$ GPIO 13 & Digital OUT & 10\,$\mu$s trigger pulse \\
+\hline
+& ECHO $\rightarrow$ GPIO 14 & Digital IN & Use voltage divider (5\,V output) \\
+\hline
+& VCC $\rightarrow$ 5\,V & Power & \\
+\hline
+
+DHT11 & DATA $\rightarrow$ GPIO 4 & Digital & Temperature/Humidity sensor \\
+\hline
+& VCC $\rightarrow$ 3.3\,V & Power & \\
+\hline
+
+Servo SG90 & Signal $\rightarrow$ GPIO 27 & PWM OUT & 50\,Hz control signal \\
+\hline
+& VCC $\rightarrow$ 5\,V & Power & External supply recommended \\
+\hline
+
+Green LED & Anode $\rightarrow$ GPIO 15 & Digital OUT & 220\,$\Omega$ series resistor \\
+\hline
+& Cathode $\rightarrow$ GND & Ground & \\
+\hline
+
+Red LED & Anode $\rightarrow$ GPIO 2 & Digital OUT & 220\,$\Omega$ series resistor \\
+\hline
+& Cathode $\rightarrow$ GND & Ground & \\
+\hline
+
+\end{tabular}
+
+\end{table}
+\section{Wokwi Simulation}
+
+The complete circuit was built and tested in the Wokwi online simulator to verify wiring, pin assignments, and firmware logic prior to physical assembly.
+
+Simulation observations:
+\begin{itemize}[leftmargin=*]
+    \item MFRC522 connected via VSPI (GPIO 5/18/19/23/22) --- all SPI signals routed correctly with no pin conflicts.
+    \item HC-SR04 triggers on GPIO 13 and echo returns on GPIO 14 --- distance calculation verified at 20\,cm, 50\,cm, and 100\,cm test cases.
+    \item DHT11 initialises on GPIO 4 and returns valid temperature/humidity readings on first poll.
+    \item Servo rotates from 0$^\circ$ to 90$^\circ$ on entry grant signal and returns after 3 seconds --- confirmed correct PWM timing.
+    \item Green LED activates on valid card + presence; red LED activates on invalid card --- correct alert logic confirmed.
+    \item Capacity limit enforced: gate remains closed and red LED activates when attendee count equals MAX\_CAPACITY.
+    \item Serial monitor output shows UID, validation result, count, temperature, and humidity at each event.
+\end{itemize}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{Wokwi.png}
+\caption{Wokwi Simulation of ESP32-Based Event Management System Showing LED Indicators, Sensor Interfaces, and Power Distribution}\label{fig:ltspice_schematic}
+\end{figure}
+
+\FloatBarrier
+
+
+\section{ThingSpeak Cloud Integration}
+
+The ESP32 microcontroller transmits all sensor and system data to the ThingSpeak cloud platform at regular intervals of 15 seconds using its built-in Wi-Fi module and HTTP protocol. The transmitted data includes crowd count, entry and exit counts, temperature, humidity, gate status, and access control status.
+
+ThingSpeak stores this data in a dedicated channel, where each parameter is mapped to a specific field. This structured storage enables real-time monitoring as well as historical data analysis through graphical visualization.
+
+Event organizers and management staff can access live data remotely from any internet-connected device using the ThingSpeak dashboard. This allows efficient monitoring of crowd levels and environmental conditions within the venue.
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{thingspeak_dashboard.png}
+\caption{ThingSpeak Dashboard Visualization}
+\label{fig:thingspeak_dashboard}
+\end{figure}
+\FloatBarrier
+
+Additionally, threshold-based alerts can be configured in ThingSpeak. For example, when the crowd count exceeds the predefined capacity limit, or when temperature and humidity cross safe thresholds, automatic alerts can be generated. These alerts help ensure safety, prevent overcrowding, and enable quick response to critical situations during events.
+
+
+\section{LTSpice Circuit Schematic}
+
+LTSpice was used to analyse the voltage regulation circuit used to provide a stable supply voltage for the system. The simulation verified the ability of the Zener-diode-based regulator to maintain a nearly constant output voltage under varying input conditions.
+
+\textbf{Simulation observations include:}
+\begin{itemize}
+    \item The output voltage remained close to the Zener reference voltage during the simulation period.
+    \item The capacitor reduced voltage fluctuations and improved output stability.
+    \item The load resistor demonstrated the regulator's ability to supply current while maintaining voltage regulation.
+    \item The waveform analysis confirmed stable voltage behaviour suitable for low-power electronic circuits.
+\end{itemize}
+
+The LTSpice simulation was performed primarily to verify the electrical behaviour of the regulator circuit before hardware implementation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{ltspice_schematic.png}
+\caption{LTSpice Circuit Diagram of Voltage Regulator}
+\label{fig:ltspice_diagram}
+\end{figure}
+
+\FloatBarrier
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{ltspice_waveform.png}
+\caption{LTSpice Simulation Waveform Showing Voltage and Current Behavior of the Circuit}
+\label{fig:ltspice_waveform}
+\end{figure}
+
+\FloatBarrier
+
+
+\section{ESP32 Firmware}
+
+\subsection*{Key Design Decisions}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Libraries:} \texttt{MFRC522.h} (SPI RFID), \texttt{ESP32Servo.h} (PWM servo), \texttt{DHT.h} (Adafruit DHT sensor), \texttt{NewPing.h} (HC-SR04 timing).
+    \item \textbf{UID Whitelist:} Stored as a \texttt{String} array in firmware. Scanned UID is converted to hex string and compared.
+    \item \textbf{Dual Validation:} Entry requires \textit{both} RFID match AND ultrasonic presence detection to pass.
+    \item \textbf{Gate Timer:} \texttt{millis()}-based non-blocking 3-second gate open timer --- does not block the main sensor loop.
+    \item \textbf{Capacity Counter:} Integer counter increments on successful entry and decrements if exit detection is implemented.
+    \item \textbf{DHT Read Interval:} DHT11 read every 2 seconds (minimum reliable interval for this sensor).
+    \item \textbf{Serial Logging:} All events logged at 115,200 baud --- UID, result, count, temperature, and humidity printed on each card scan.
+\end{itemize}
+
+\vspace{0.5cm}
+{\footnotesize
+
+\begin{table}[H]
+\centering
+\caption{Hardware Testing Results}
+\begin{tabular}{|l|c|c|}
+\hline
+Test Case & Expected Result & Status \\
+\hline
+Valid RFID Card & Gate Opens & Pass \\
+Invalid RFID Card & Access Denied & Pass \\
+Person Detection & RFID Request Triggered & Pass \\
+Servo Operation & Opens and Closes Correctly & Pass \\
+Temperature Monitoring & Sensor Data Recorded & Pass \\
+Cloud Upload & Data Visible on Dashboard & Pass \\
+Capacity Limit Reached & Entry Blocked & Pass \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{lstlisting}[language=C++, caption={Core Access Control Logic}]
+float distance = getDistance();
+bool personDetected =
+    (distance > 2 && distance < DETECT_DISTANCE);
+
+if (personDetected && !gateOpen)
+{
+    if (rfid.PICC_IsNewCardPresent() &&
+        rfid.PICC_ReadCardSerial())
+    {
+        if (authorizedCard())
+        {
+            if (safe)
+            {
+                openGate();
+                entryCount++;
+                crowdCount++;
+                accessStatus = 1;
+            }
+            else
+            {
+                accessStatus = 2;
+            }
+        }
+        else
+        {
+            accessStatus = 3;
+        }
+
+        resetRFID();
+    }
+}
+\end{lstlisting}
+
+The above code snippet represents the core access-control logic of the system. Entry is granted only when three conditions are satisfied: (i) a person is detected near the gate using the HC-SR04 ultrasonic sensor, (ii) the RFID card is authenticated against the registered UID list, and (iii) environmental conditions are within safe limits. Upon successful validation, the servo-operated gate is opened and the attendee count is updated. This multi-level validation mechanism improves security and prevents unauthorized access.
+
+The complete source code is provided in Appendix A.
+
+
+\section{Three-Level System State Table}
+
+Table~\ref{tab:states} defines all possible system states and their corresponding hardware outputs.
+
+\begin{table}[h!]
+\centering
+\caption{System State Table}
+\label{tab:states}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{3cm}|p{5cm}|p{1.5cm}|p{1.5cm}|p{2cm}|}
+\hline
+\textbf{State} & \textbf{Trigger Condition} & \textbf{Green LED} & \textbf{Red LED} & \textbf{Gate (Servo)} \\
+\hline
+
+IDLE & No card detected & OFF & OFF & Closed (0$^\circ$) \\
+\hline
+
+GRANTED & Valid UID + presence + below capacity & ON & OFF & Open (90$^\circ$) for 3\,s \\
+\hline
+
+DENIED -- Invalid & UID not in whitelist & OFF & ON (1.5\,s) & Closed \\
+\hline
+
+DENIED -- Full & Attendee count $=$ MAX & OFF & ON (1.5\,s) & Closed \\
+\hline
+
+DENIED -- No Presence & RFID valid but no one detected & OFF & ON (1.5\,s) & Closed \\
+\hline
+
+ENV WARNING & Temp $>$28$^\circ$C or Humidity $>$60\% & ON* & OFF & Unaffected \\
+\hline
+
+ENV ALERT & Temp $>$35$^\circ$C or Humidity $>$70\% & OFF & ON* & Unaffected \\
+\hline
+
+\end{tabular}
+\end{table}
+
+\vspace{0.3cm}
+\textit{* Environmental alerts are logged to serial monitor and future ThingSpeak dashboard; they do not override gate operation.}
+
+\section{System Block Diagram}
+
+The system architecture follows a linear validation pipeline:
+
+\begin{center}
+\textbf{Sensor Inputs $\rightarrow$ ESP32 Processing $\rightarrow$ Validation Logic $\rightarrow$ Actuator Outputs}
+\end{center}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Inputs:} MFRC522 (SPI), HC-SR04 (GPIO 12/14), DHT11 (GPIO 4)
+    \item \textbf{Processor:} ESP32-WROOM-32 running three-layer validation logic
+    \item \textbf{Outputs:} SG90 Servo (PWM, GPIO 13), Green LED (GPIO 26), Red LED (GPIO 27), Serial Monitor log
+    \item \textbf{Future Output:} ThingSpeak Cloud Dashboard (WiFi, built into ESP32)
+\end{itemize}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.5\textwidth]{systemblock.png}
+%\caption{System Block Diagram of the IoT-Based Smart Event Management System}
+%\label{fig:system_block}
+%\end{figure}
+
+\FloatBarrier
+
+% =====================================================================
+%                   CHAPTER 4: RESULTS AND DISCUSSION
+% =====================================================================
+\chapter{Results and Discussion}
+
+The Smart Crowd Management System was successfully implemented and tested as a hardware prototype. The system integrates an ESP32 microcontroller with an MFRC522 RFID reader, HC-SR04 ultrasonic sensor, DHT11 temperature and humidity sensor, SG90 servo motor, and status indicator LEDs.
+
+Hardware testing confirmed that the RFID module accurately authenticated authorized users while rejecting unauthorized cards. The ultrasonic sensor reliably detected the presence of individuals and triggered the access control process. Upon successful authentication, the servo motor opened the gate automatically and closed it after a predefined delay.
+
+The DHT11 sensor successfully measured environmental parameters, and the collected data was transmitted to the cloud using ThingSpeak and Blynk for real-time monitoring. Crowd count, access status, temperature, humidity, and gate status were displayed correctly on the monitoring platform.
+
+The integrated system operated reliably during repeated test runs, demonstrating accurate sensing, secure access control, automated gate operation, and successful cloud connectivity. The results validate the effectiveness of the proposed Smart Crowd Management System for crowd monitoring and access management applications.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{project_prototype.jpeg}
+\caption{Hardware Prototype of the Smart Crowd Management System}
+\label{fig:prototype}
+\end{figure}
+
+
+\section{Simulation-Based Validation}
+
+\subsection{Wokwi Functional Simulation}
+
+The Wokwi simulator was used to verify circuit wiring, GPIO assignments, and complete firmware behaviour. The following results were confirmed:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{RFID Module:} MFRC522 correctly initialised on VSPI bus (GPIO 5/18/19/23/22). Simulated card scan returns expected UID string. Whitelist comparison functions correctly --- registered UIDs granted, unregistered UIDs denied.
+    \item \textbf{Ultrasonic Sensor:} HC-SR04 distance calculations verified at 10\,cm, 25\,cm, and 60\,cm test cases. Presence threshold of 30\,cm correctly classifies test cases.
+    \item \textbf{Servo Motor:} Gate opens to 90$^\circ$ on GRANTED state and returns to 0$^\circ$ after 3 seconds. \texttt{millis()}-based timer confirmed non-blocking --- RFID polling continues during gate open window.
+    \item \textbf{LED Logic:} Green LED activates exclusively on GRANTED state; red LED activates on all DENIED states. No simultaneous activation observed.
+    \item \textbf{Capacity Enforcement:} Counter increments on each successful entry. Gate correctly locks when count reaches MAX\_CAPACITY and red LED activates on subsequent valid card scans.
+    \item \textbf{DHT11:} Temperature and humidity readings initialise correctly. Environmental warning message prints to serial monitor when thresholds are exceeded.
+    \item \textbf{Anti-Tailgate:} When a valid RFID card is scanned but HC-SR04 detects no presence (distance $>$ 30\,cm), entry is denied and red LED activates --- confirming the dual-layer validation.
+    \item \textbf{Serial Log:} All events (UID, validation result, count, temperature, humidity) printed in correct format at 115,200 baud.
+\end{itemize}
+
+\subsection{LTSpice Electrical Verification}
+
+A transient analysis (\texttt{.tran 5s}) was run on the LED driver and power supply circuits:
+
+\begin{itemize}[leftmargin=*]
+    \item 3.3\,V rail stable under simultaneous LED and DHT11 load --- no voltage sag observed.
+    \item LED current confirmed at 14.5\,mA per LED with 220\,$\Omega$ series resistors --- within ESP32 GPIO 40\,mA limit.
+    \item Voltage divider on HC-SR04 ECHO pin steps 5\,V to 3.28\,V --- within ESP32 GPIO input threshold.
+    \item Servo draw (up to 250\,mA at 5\,V) isolated from ESP32 3.3\,V regulator --- no brown-out during servo actuation.
+    \item Decoupling capacitor (100\,$\mu$F on 5\,V rail) suppresses transient spike from servo motor start.
+\end{itemize}
+
+\section{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Single Entry Point:} Current design supports one gate. Multi-gate deployment requires multiple ESP32 units and a shared count synchronisation mechanism (via cloud).
+    \item \textbf{RFID Range:} MFRC522 read range is limited to 3--5\,cm. Attendees must physically tap their card, which may slow throughput at high-volume entry points.
+    \item \textbf{No Exit Tracking:} Current firmware only counts entries. Exit count decrement requires a separate exit sensor or gate.
+    \item \textbf{Offline Operation:} ThingSpeak integration is future scope; current system has no remote dashboard or notifications.
+    \item \textbf{Ultrasonic Angle Sensitivity:} HC-SR04 has a narrow beam angle ($\sim$15$^\circ$). Accurate placement is required to reliably detect persons in the gate channel.
+    \item \textbf{DHT11 Response Time:} Minimum 2-second read interval limits environmental update frequency during rapidly changing crowd conditions.
+    \item \textbf{No Battery Backup:} System depends on USB power; a power outage disables the gate. Future version should include UPS or battery backup.
+\end{itemize}
+
+\section{Future Scope}
+
+\subsection{Cloud and Remote Integration}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Capacity Alerts:} ThingSpeak React app sends email/SMS notification at 80\% capacity (warning) and 100\% capacity (locked).
+    \item \textbf{Telegram Bot:} On capacity lock or environmental alert, ESP32 sends instant Telegram message to organiser's phone via Telegram Bot API.
+    \item \textbf{Web Dashboard:} \texttt{WebServer.h} local dashboard served over event WiFi showing live count and sensor readings accessible from any browser on the network.
+\end{itemize}
+
+\subsection{Hardware Extension}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{16$\times$2 LCD Display:} Shows live attendee count and venue status at the gate without requiring a phone or laptop.
+    \item \textbf{Exit Gate:} Second HC-SR04 or IR sensor on exit side to decrement count and track net occupancy.
+    \item \textbf{Buzzer:} Audio feedback for granted/denied entry --- one beep for grant, two beeps for deny.
+    \item \textbf{Fingerprint Sensor:} Replace or supplement RFID with R307 fingerprint module for higher-security applications.
+\end{itemize}
+
+\subsection{Software and AI Enhancements}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Dynamic UID Registration:} Web interface for organisers to add/remove valid cards without reflashing firmware.
+    \item \textbf{Session Scheduling:} Time-based gate control with automated unlock/lock for scheduled sessions.
+    \item \textbf{Entry Rate Analytics:} ThingSpeak MATLAB analytics to plot entry rate over time and predict peak crowd windows.
+    \item \textbf{Predictive Crowd Safety:} TensorFlow Lite model on ESP32 to predict crowd density risk from entry rate and environmental data before conditions become dangerous.
+\end{itemize}
+
+% =====================================================================
+%                       CHAPTER 5: CONCLUSION
+% =====================================================================
+\chapter{Conclusion}
+
+\section{Summary}
+
+This project designed and prototyped the \textbf{IoT-Based Smart Event Management and Automated Coordination System} using ESP32, MFRC522 RFID, HC-SR04 ultrasonic sensor, DHT11, and a servo motor gate. Key achievements:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Dual-Layer Entry Validation:} RFID confirms identity; ultrasonic confirms physical presence. This combination prevents both unauthorised entry and card-passing/tailgating --- a feature absent from all existing low-cost alternatives.
+    \item \textbf{Physical Gate Enforcement:} Servo motor gate provides hardware-level access control --- access cannot be bypassed without physical interaction.
+    \item \textbf{Automated Capacity Management:} Gate locks autonomously at MAX\_CAPACITY without human intervention.
+    \item \textbf{Environmental Safety Monitoring:} DHT11 integration adds real-time temperature and humidity tracking relevant to crowd safety, with WHO-based thresholds.
+    \item \textbf{Noise-Resistant Design:} \texttt{millis()}-based non-blocking architecture ensures gate timer and sensor polling do not interfere with each other.
+    \item \textbf{Simulation Validated:} Wokwi functional simulation and LTSpice electrical verification confirm the design before physical build.
+    \item \textbf{Affordable:} Total hardware cost of approximately Rs.~900 --- accessible for student events and small organisations.
+    \item \textbf{Cloud-Ready:} ESP32 onboard WiFi enables ThingSpeak integration in the next development phase without any hardware change.
+\end{itemize}
+
+\section{Final Remarks}
+
+This project addresses a genuine gap in low-cost event management infrastructure. The combination of identity verification, physical presence detection, automated gate control, and environmental monitoring in a single Rs.~900 device represents a meaningful improvement over both manual volunteer-based entry and expensive commercial access control systems.
+
+The system is immediately deployable for college fests, departmental events, and conferences. Its open firmware allows customisation for any event size or access policy. With the planned ThingSpeak integration, it will provide organisers with a complete real-time picture of venue occupancy and environmental conditions from any internet-connected device.
+
+% =====================================================================
+%                          REFERENCES
+% =====================================================================
+\begin{thebibliography}{99}
+
+\setlength{\itemsep}{0.5em}
+
+\bibitem{circuitdigest2021}
+CircuitDigest,
+``IoT Based Event Management System using NodeMCU and RFID,''
+2021.
+
+\bibitem{kumar2021}
+R.\ Kumar \textit{et al.},
+``IoT Based Event Management System Using RFID,''
+ResearchGate, 2021.
+
+\bibitem{sharma2021}
+S.\ Sharma \textit{et al.},
+``IoT Based Event Management System,''
+SSRN, 2021.
+
+\bibitem{libelium2022}
+Libelium,
+``Transforming Event Experiences for Smarter Management with IoT Solutions,''
+2022.
+
+\bibitem{ijcst2020}
+IJCST Journal,
+``IoT Based Event Management System Using RFID,''
+\textit{Int.\ J.\ Comput.\ Sci.\ Technol.}, vol.\ 4, issue 2, 2020.
+
+\end{thebibliography}
+
+\appendix
+
+\chapter{ESP32 Firmware Source Code}
+\begin{lstlisting}[caption={ESP32 Smart Event Management System -- Core Firmware}, label={lst:firmware}]
+//St@mFdN@55
+// ==========================
+// WiFi + Cloud Config
+// ==========================
+#define BLYNK_TEMPLATE_ID "TMPL3QQroHy9l"
+#define BLYNK_TEMPLATE_NAME "Smart Publivement"
+#define BLYNK_AUTH_TOKEN "FqtfKDRanxYpFFqqFoxyu4KOZOpMHo4a"
+
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <BlynkSimpleEsp32.h>
+#include <SPI.h>
+#include <MFRC522.h>
+#include <ESP32Servo.h>
+#include <DHT.h>
+
+
+const char* WIFI_SSID = "<REDACTED>";
+const char* WIFI_PASS = "<REDACTED>";
+const char* THINGSPEAK_WRITE_KEY = "<REDACTED>";
+
+// ThingSpeak / Blynk fields
+#define BLYNK_VPIN_CROWD_COUNT   V0
+#define BLYNK_VPIN_ENTRY_COUNT   V1
+#define BLYNK_VPIN_EXIT_COUNT    V2
+#define BLYNK_VPIN_TEMPERATURE   V3
+#define BLYNK_VPIN_HUMIDITY      V4
+#define BLYNK_VPIN_GATE_STATUS   V5
+#define BLYNK_VPIN_ACCESS_STATUS V6
+#define BLYNK_VPIN_CAP_ALERT     V7
+
+// ==========================
+// PIN DEFINITIONS
+// ==========================
+#define TRIG_PIN 13
+#define ECHO_PIN 14
+
+#define RED_LED 2
+#define GREEN_LED 15
+
+#define SERVO_PIN 27
+
+#define SS_PIN 5
+#define RST_PIN 22
+
+#define DHT_PIN 4
+#define DHT_TYPE DHT11
+
+// ==========================
+// OBJECTS
+// ==========================
+MFRC522 rfid(SS_PIN, RST_PIN);
+Servo gate;
+DHT dht(DHT_PIN, DHT_TYPE);
+
+// ==========================
+// SETTINGS
+// ==========================
+const float TEMP_LIMIT = 40.0;      // °C
+const float HUM_LIMIT = 80.0;       // %
+const float DETECT_DISTANCE = 6.0;   // cm
+
+const int GATE_OPEN_ANGLE = 90;
+const int GATE_CLOSE_ANGLE = 0;
+const unsigned long GATE_OPEN_TIME = 3000;
+
+const unsigned long CLOUD_UPDATE_INTERVAL = 15000; // ms (ThingSpeak free plan)
+const unsigned long WIFI_RETRY_INTERVAL = 10000;
+const int EVENT_CAPACITY = 100;      // set your venue capacity
+const int CAPACITY_ALERT_PERCENT = 70; // %
+
+const float INVALID_READING = -999.0;
+
+// ==========================
+// VARIABLES
+// ==========================
+bool gateOpen = false;
+bool waitingForCard = false;
+
+unsigned long gateTimer = 0;
+unsigned long lastCloudUpload = 0;
+unsigned long lastWiFiAttempt = 0;
+
+int crowdCount = 0;
+int entryCount = 0;
+int exitCount = 0;
+
+// Access status: 0=idle, 1=granted, 2=environment lock, 3=invalid card
+int accessStatus = 0;
+
+// ==========================
+// WIFI / BLYNK
+// ==========================
+void connectWiFi()
+{
+  if (WiFi.status() == WL_CONNECTED) return;
+
+  Serial.print("Connecting to WiFi");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  unsigned long start = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - start < 12000)
+  {
+    delay(300);
+    Serial.print(".");
+  }
+
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.println();
+    Serial.print("WiFi Connected: ");
+    Serial.println(WiFi.localIP());
+  }
+  else
+  {
+    Serial.println();
+    Serial.println("WiFi not connected.");
+  }
+}
+
+void maintainConnections()
+{
+  if (WiFi.status() != WL_CONNECTED && millis() - lastWiFiAttempt > WIFI_RETRY_INTERVAL)
+  {
+    lastWiFiAttempt = millis();
+    connectWiFi();
+  }
+
+  if (WiFi.status() == WL_CONNECTED && !Blynk.connected())
+  {
+    Blynk.config(BLYNK_AUTH_TOKEN);
+    Blynk.connect(3000);
+  }
+
+  Blynk.run();
+}
+
+// ==========================
+// UTILS
+// ==========================
+bool readEnvironment(float &temp, float &hum)
+{
+  // temp = dht.readTemperature();
+  // hum = dht.readHumidity();
+  // if (isnan(temp) || isnan(hum))
+  //   return false;
+  return true;
+}
+
+bool isSafeEnv(float temp, float hum)
+{
+  if (isnan(temp) || isnan(hum))
+    return false;
+  if (temp > TEMP_LIMIT) return false;
+  if (hum > HUM_LIMIT) return false;
+  return true;
+}
+
+bool isCapacityAlert()
+{
+  if (EVENT_CAPACITY <= 0) return false;
+  int percent = (crowdCount * 100) / EVENT_CAPACITY;
+  return percent >= CAPACITY_ALERT_PERCENT;
+}
+
+// ==========================
+// ULTRASONIC
+// ==========================
+float getDistance()
+{
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  long duration = pulseIn(ECHO_PIN, HIGH, 30000);
+
+  if (duration == 0) return INVALID_READING;
+
+  float distance = duration * 0.0343 / 2.0;
+  if (distance < 2 || distance > 400) return INVALID_READING;
+  return distance;
+}
+
+// ==========================
+// RFID
+// ==========================
+bool authorizedCard()
+{
+  if (rfid.uid.size != 4)
+    return false;
+
+  return (
+    rfid.uid.uidByte[0] == 0xF3 &&
+    rfid.uid.uidByte[1] == 0xD4 &&
+    rfid.uid.uidByte[2] == 0xF4 &&
+    rfid.uid.uidByte[3] == 0x05
+  );
+}
+
+void resetRFID()
+{
+  rfid.PICC_HaltA();
+  rfid.PCD_StopCrypto1();
+}
+
+// ==========================
+// GATE CONTROL
+// ==========================
+void openGate()
+{
+  Serial.println("OPEN GATE CALLED");
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(GREEN_LED, HIGH);
+
+  gate.write(GATE_OPEN_ANGLE);
+  gateOpen = true;
+  gateTimer = millis();
+
+  accessStatus = 1;
+
+  Serial.println();
+  Serial.println("=================================");
+  Serial.println("ACCESS GRANTED");
+  Serial.println("Gate Opened");
+  Serial.println("=================================");
+}
+
+void closeGate()
+{
+  Serial.println("CLOSE GATE CALLED");
+  gate.write(GATE_CLOSE_ANGLE);
+  digitalWrite(GREEN_LED, LOW);
+  gateOpen = false;
+  accessStatus = 0;
+  Serial.println();
+  Serial.println("Gate Closed");
+}
+
+// ==========================
+// CLOUD PUBLISH
+// ==========================
+void publishToThingSpeak(float temp, float hum, float dist, bool personDetected, bool safe)
+{
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  bool capAlert = isCapacityAlert();
+
+  String url = "http://api.thingspeak.com/update?api_key=" + String(THINGSPEAK_WRITE_KEY);
+  url += "&field1=" + String(crowdCount);
+  url += "&field2=" + String(entryCount);
+  url += "&field3=" + String(exitCount);
+  url += "&field4=" + String(temp, 1);
+  url += "&field5=" + String(hum, 1);
+  url += "&field6=" + String(gateOpen ? 1 : 0);
+  url += "&field7=" + String(accessStatus);
+  url += "&field8=" + String(capAlert ? 1 : 0);
+
+  HTTPClient http;
+  http.begin(url);
+  int code = http.GET();
+  Serial.print("ThingSpeak response: ");
+  Serial.println(code);
+  http.end();
+}
+
+void publishToBlynk(float temp, float hum, float dist, bool personDetected, bool safe)
+{
+  if (WiFi.status() != WL_CONNECTED || !Blynk.connected()) return;
+
+  Blynk.virtualWrite(BLYNK_VPIN_CROWD_COUNT, crowdCount);
+  Blynk.virtualWrite(BLYNK_VPIN_ENTRY_COUNT, entryCount);
+  Blynk.virtualWrite(BLYNK_VPIN_EXIT_COUNT, exitCount);
+  Blynk.virtualWrite(BLYNK_VPIN_TEMPERATURE, temp);
+  Blynk.virtualWrite(BLYNK_VPIN_HUMIDITY, hum);
+  Blynk.virtualWrite(BLYNK_VPIN_GATE_STATUS, gateOpen ? 1 : 0);
+  Blynk.virtualWrite(BLYNK_VPIN_ACCESS_STATUS, accessStatus);
+  Blynk.virtualWrite(BLYNK_VPIN_CAP_ALERT, isCapacityAlert() ? 1 : 0);
+}
+
+void publishCloudData(float temp, float hum, float dist, bool personDetected, bool safe)
+{
+  publishToThingSpeak(temp, hum, dist, personDetected, safe);
+  publishToBlynk(temp, hum, dist, personDetected, safe);
+}
+
+// ==========================
+// SETUP
+// ==========================
+void setup()
+{
+  Serial.begin(115200);
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(GREEN_LED, LOW);
+
+  SPI.begin();
+  rfid.PCD_Init();
+
+  dht.begin();
+
+  gate.attach(SERVO_PIN, 500, 2400);
+  gate.write(GATE_OPEN_ANGLE);
+  delay(1000);
+  gate.write(GATE_CLOSE_ANGLE);
+  delay(1000);
+
+  connectWiFi();
+  Blynk.config(BLYNK_AUTH_TOKEN);
+  Blynk.connect();
+
+  Serial.println();
+  Serial.println("=================================");
+  Serial.println(" SMART CROWD MANAGEMENT SYSTEM");
+  Serial.println("=================================");
+  Serial.println("RFID      : READY");
+  Serial.println("HC-SR04   : READY");
+  Serial.println("DHT11     : READY");
+  Serial.println("SERVO     : READY");
+  Serial.println("THINGSPEAK : READY");
+  Serial.println("BLYNK     : READY");
+  Serial.println("SYSTEM    : ONLINE");
+  Serial.println("=================================");
+}
+
+// ==========================
+// LOOP
+// ==========================
+void loop()
+{
+  maintainConnections();
+
+  // Auto close gate
+  if (gateOpen && (millis() - gateTimer >= GATE_OPEN_TIME))
+  {
+    closeGate();
+  }
+
+  // Read environment
+  float temp, hum;
+  bool envValid = readEnvironment(temp, hum);
+  bool safe = isSafeEnv(temp, hum);
+  if (!safe)
+  {
+    digitalWrite(RED_LED, HIGH);
+    if (gateOpen) closeGate();
+    if (envValid)
+    {
+      Serial.print("Unsafe - Temp: ");
+      Serial.print(temp);
+      Serial.print("C Hum: ");
+      Serial.print(hum);
+      Serial.println("%");
+    }
+    accessStatus = 2;
+  }
+  // Detect person
+  float distance = getDistance();
+  bool personDetected = (distance > 2 && distance < DETECT_DISTANCE);
+
+  // RFID section
+  if (personDetected && !gateOpen)
+  {
+    digitalWrite(RED_LED, HIGH);
+
+    if (!waitingForCard)
+    {
+      Serial.println();
+      Serial.println("Person Detected");
+      Serial.println("Waiting For RFID Card...");
+      waitingForCard = true;
+    }
+
+    if (rfid.PICC_IsNewCardPresent())
+    {
+      if (rfid.PICC_ReadCardSerial())
+      {
+        waitingForCard = false;
+
+        Serial.println();
+        Serial.println("RFID DETECTED");
+        Serial.print("UID : ");
+        for (byte i = 0; i < rfid.uid.size; i++)
+        {
+          Serial.print(rfid.uid.uidByte[i], HEX);
+          Serial.print(" ");
+        }
+        Serial.println();
+
+        if (authorizedCard())
+        {
+          if (safe)
+          {
+            openGate();
+            entryCount++;
+            crowdCount++;
+            accessStatus = 1;
+          }
+          else
+          {
+            Serial.println("ACCESS REJECTED");
+            Serial.println("ENVIRONMENT LOCK");
+            accessStatus = 2;
+          }
+        }
+        else
+        {
+          Serial.println("ACCESS DENIED");
+          Serial.println("INVALID CARD");
+          accessStatus = 3;
+        }
+
+        resetRFID();
+      }
+    }
+  }
+  else if (!personDetected && !gateOpen)
+  {
+    waitingForCard = false;
+    digitalWrite(RED_LED, LOW);
+    if (safe && !isCapacityAlert())
+      accessStatus = 0;
+  }
+
+  // Periodic cloud upload
+  if (millis() - lastCloudUpload >= CLOUD_UPDATE_INTERVAL)
+  {
+    if (envValid && distance != INVALID_READING)
+    {
+      publishCloudData(temp, hum, distance, personDetected, safe);
+    }
+    lastCloudUpload = millis();
+  }
+  delay(50);
+}
+\end{lstlisting}
+
+
+
+\end{document}

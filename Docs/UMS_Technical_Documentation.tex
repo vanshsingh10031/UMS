@@ -1,0 +1,161 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,xcolor,tabularx,booktabs,enumitem,titlesec,fancyhdr,hyperref}
+
+\definecolor{maroon}{HTML}{8D153A}
+\definecolor{darkmaroon}{HTML}{5F1028}
+\definecolor{gold}{HTML}{C89C46}
+\definecolor{softrose}{HTML}{F8EDF1}
+\definecolor{textgray}{HTML}{625B58}
+
+\hypersetup{colorlinks=true,linkcolor=maroon,urlcolor=maroon,
+  pdftitle={UMS Technical Summary},pdfauthor={UMS Project Team}}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{maroon}{\textbf{AMRITA UMS}}}
+\rhead{\textcolor{textgray}{Technical Summary}}
+\cfoot{\textcolor{textgray}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\large\bfseries\color{maroon}}{\thesection}{0.6em}{}
+\setlist[itemize]{leftmargin=1.35em,itemsep=2pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{titlepage}
+\pagecolor{darkmaroon}
+\color{white}
+\vspace*{2cm}
+{\Large\textbf{AMRITA VISHWA VIDYAPEETHAM}}\\[0.3cm]
+{\color{gold}\rule{\textwidth}{1.2pt}}\\[1.5cm]
+{\Huge\bfseries University Management System}\\[0.5cm]
+{\LARGE Technical Summary}\\[1.2cm]
+
+\colorbox{maroon}{\parbox{\dimexpr\textwidth-2\fboxsep}{
+\vspace{3mm}
+\textbf{Purpose}\\
+Define the approved product direction, technology stack, core modules,
+engineering tools, and implementation roadmap for the University Management System.
+\vspace{3mm}
+}}
+
+\vfill
+{\color{gold}\textbf{VERSION 1.1}}\\
+July 2026\\[0.5cm]
+{\small Current status: Frontend prototype approved as the visual and workflow baseline.}
+\end{titlepage}
+\nopagecolor
+\color{black}
+
+\section{Product Direction}
+
+The University Management System will be a secure, role-based ERP for
+administrators, faculty, and students. The approved React prototype defines the
+visual design, navigation, dashboards, and principal workflows. Production
+development will connect this experience to a .NET 8 Web API and Microsoft SQL
+Server.
+
+\textbf{Current prototype:} responsive frontend, mock login, role dashboards,
+tables, forms, charts, timetable, attendance, assignments, library, results,
+notifications, and analytics. Mock data and authentication will be replaced
+during production development.
+
+\section{Technology Stack}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.2cm} p{4cm} X}
+\toprule
+Layer & Technology & Purpose \\
+\midrule
+Frontend & React.js, Vite & Responsive component-based web application. \\
+Navigation & React Router & Protected, role-based routes. \\
+UI and charts & CSS, Recharts, Lucide & Design system, data visuals, and icons. \\
+Backend & .NET 8 Web API & Business rules, validation, security, and REST APIs. \\
+Data access & Entity Framework Core & SQL mapping, transactions, and migrations. \\
+Database & Microsoft SQL Server & Academic and operational data storage. \\
+Authentication & Identity or university SSO & Secure sessions, roles, and permissions. \\
+Testing & Vitest, RTL, xUnit & Frontend, backend, and integration verification. \\
+Deployment & IIS or Azure, CI/CD & Controlled environment-specific releases. \\
+\bottomrule
+\end{tabularx}
+
+\section{Architecture}
+
+\begin{itemize}
+  \item React communicates only with versioned .NET API endpoints.
+  \item Controllers validate requests and delegate rules to application services.
+  \item Entity Framework Core manages SQL Server access and migrations.
+  \item Backend authorization is the source of truth for every protected action.
+  \item Audit logs record important identity, attendance, marks, and data changes.
+\end{itemize}
+
+\section{Core Modules}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.2cm} X}
+\toprule
+Portal & Principal scope \\
+\midrule
+Administrator & Staff, students, courses, batches, subjects, timetable,
+examinations, library, reports, and analytics. \\
+Faculty & Profile, subjects, timetable, students, attendance, assignments,
+materials, submissions, and marks. \\
+Student & Profile, courses, timetable, attendance, assignments, materials,
+results, library, notices, and events. \\
+\bottomrule
+\end{tabularx}
+
+\section{Development Tools}
+
+\begin{itemize}
+  \item \textbf{VS Code:} React development; \textbf{Visual Studio 2022:} .NET development.
+  \item \textbf{Git and GitHub:} version control, pull requests, reviews, and releases.
+  \item \textbf{Swagger and Postman:} API documentation and integration testing.
+  \item \textbf{SQL Server Management Studio:} database administration and diagnostics.
+  \item \textbf{GitHub Actions or Azure DevOps:} automated builds, tests, and deployments.
+  \item \textbf{Serilog/Application Insights:} production logging and monitoring.
+\end{itemize}
+
+\newpage
+\section{Security and Engineering Rules}
+
+\begin{itemize}
+  \item Enforce least-privilege permissions in the backend, not only in the UI.
+  \item Use HTTPS and secure HttpOnly cookies; never commit credentials or secrets.
+  \item Validate all requests and use transactions for multi-record operations.
+  \item Preserve operational history and audit sensitive academic changes.
+  \item Every screen must support loading, empty, success, validation, and error states.
+  \item A feature is complete only after build, test, permission, and responsive checks pass.
+\end{itemize}
+
+\section{Delivery Roadmap}
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=3pt]
+  \item \textbf{Foundation:} confirm requirements, data ownership, roles, permissions,
+        authentication, audit logging, environments, and CI/CD.
+  \item \textbf{Masters and scheduling:} implement staff, student, course, batch,
+        subject, timetable, and academic calendar workflows.
+  \item \textbf{Teaching and assessment:} implement attendance, assignments,
+        materials, examinations, marks, results, and reports.
+  \item \textbf{Operations and launch:} implement library and notifications, then
+        complete security, accessibility, performance, backup, and pilot testing.
+\end{enumerate}
+
+\section{Immediate Next Steps}
+
+\begin{itemize}
+  \item Freeze the first-phase functional scope with university stakeholders.
+  \item Define the SQL Server schema and role-permission matrix.
+  \item Implement secure authentication and typed frontend API services.
+  \item Build the first complete workflow: Student Master from UI to database.
+  \item Pilot with selected administrators, faculty, and students.
+\end{itemize}
+
+\vfill
+\begin{center}
+\small\color{textgray}
+This summary is the initial engineering baseline and should remain version controlled.
+\end{center}
+
+\end{document}

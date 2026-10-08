@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Frontend build
+dist/
+
+# Backend build
+bin/
+obj/
+Backend/UMS.Api/bin/
+Backend/UMS.Api/obj/
+Backend/UMS.Api/.vs/
+Backend/.tmpHash/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+Backend/UMS.Api/appsettings.Development.json
+
+# Generated deployment/data artifacts
+outputs/
+Docs/render_*/
+Docs/word_pdf/
+Docs/WhatsApp Unknown 2026-10-07 at 11.48.28 AM/
+Docs/WhatsApp Unknown 2026-10-07 at 11.48.28 AM.zip
+
+# IDE/system
+.vs/
+.vscode/
+*.user
+*.suo
+*.tmp
+Thumbs.db
+desktop.ini
