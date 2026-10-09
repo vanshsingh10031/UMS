@@ -331,6 +331,24 @@ const exportRows = (filename, rows) => {
   URL.revokeObjectURL(url)
 }
 
+const exportWeeklyTimetable = (entries) => {
+  const orderedDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const rows = [...entries].sort((a, b) => {
+    const dayOrder = orderedDays.indexOf(a.day) - orderedDays.indexOf(b.day)
+    return dayOrder || String(a.startTime || '').localeCompare(String(b.startTime || ''))
+  })
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]))
+  const tableRows = rows.map((row) => `<tr><td>${escapeHtml(row.day)}</td><td>${escapeHtml(row.startTime)}</td><td>${escapeHtml(row.endTime)}</td><td>${escapeHtml(row.subject)}</td><td>${escapeHtml(row.faculty)}</td><td>${escapeHtml(row.batch)}</td><td>${escapeHtml(row.room)}</td></tr>`).join('')
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Weekly Timetable</title><style>body{font-family:Arial,sans-serif;color:#1f1a1b}h1{color:#8d153a}table{border-collapse:collapse;width:100%;font-size:12px}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5eef1;color:#8d153a}</style></head><body><h1>Weekly Timetable</h1><p>Generated from current timetable records.</p><table><thead><tr><th>Day</th><th>Start</th><th>End</th><th>Subject</th><th>Faculty</th><th>Batch</th><th>Room</th></tr></thead><tbody>${tableRows || '<tr><td colspan="7">No timetable slots available.</td></tr>'}</tbody></table></body></html>`
+  const blob = new Blob([html], { type: 'application/msword;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'weekly-timetable.doc'
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
 function RecordsPage({ page }) {
   const map = { staff: faculty, students, courses, batches, subjects }
   const [rows, setRows] = useState(map[page] || courses)
@@ -344,7 +362,7 @@ function RecordsPage({ page }) {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const info = titleMap[page]
   const visibleRows = filterRows(rows, searchTerm)
-  const loadRows = () => api(`/${page}`).then((payload) => { setRows(unwrapList(payload)); setError('') }).catch((err) => setError(err.message))
+  const loadRows = () => api(`/${page}?pageSize=1000`).then((payload) => { setRows(unwrapList(payload)); setError('') }).catch((err) => setError(err.message))
   useEffect(() => { loadRows() }, [page])
   useEffect(() => { api('/reference-data').then((payload) => setReferenceData(buildReferenceOptions(payload))).catch(() => setReferenceData({})) }, [])
   const saveRecord = async (form) => {
@@ -449,7 +467,7 @@ function SubjectAllocationPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [formError, setFormError] = useState('')
-  const loadRows = () => api('/subject-allocations').then((payload) => setRows(unwrapList(payload))).catch((err) => setError(err.message))
+  const loadRows = () => api('/subject-allocations?pageSize=1000').then((payload) => setRows(unwrapList(payload))).catch((err) => setError(err.message))
   useEffect(() => { loadRows() }, [])
   useEffect(() => { api('/reference-data').then((payload) => setReferenceData(buildReferenceOptions(payload))).catch(() => setReferenceData({})) }, [])
   const saveAllocation = async (form) => {
@@ -479,6 +497,7 @@ function SubjectAllocationPage() {
           { key: 'batch', label: 'Batch' },
           { key: 'academicYear', label: 'Academic year' },
           { key: 'semester', label: 'Semester' },
+          { key: 'id', label: 'Allocation ID' },
         ]} />
       </section>
       {editing && <MasterFormModal fields={operationFields['subject-allocations']} options={referenceData} title="Subject Allocation" mode="create" initial={Object.fromEntries(operationFields['subject-allocations'].map(([key]) => [key, '']))} saving={saving} error={formError} onClose={() => { setEditing(false); setFormError('') }} onSave={saveAllocation} />}
@@ -634,7 +653,7 @@ function TimetablePage() {
   const rowToSlot = (row) => ({ day: row.day, startTime: row.startTime?.slice(0, 5) || '', endTime: row.endTime?.slice(0, 5) || '', room: row.room || '', subjectId: row.subjectId || '', staffId: row.staffId || '', batchId: row.batchId || '' })
   return (
     <>
-      <PageHeader eyebrow="Academic" title="Weekly Timetable" description={user.role === 'faculty' ? 'Calendar view of slots assigned to you.' : 'View class schedules, rooms and faculty assignments.'}><button className="btn btn-secondary"><Download size={17} /> Download</button>{user.role === 'admin' && <button className="btn btn-primary" onClick={() => setEditing({ mode: 'create', row: null })}><Plus size={17} /> Add slot</button>}</PageHeader>
+      <PageHeader eyebrow="Academic" title="Weekly Timetable" description={user.role === 'faculty' ? 'Calendar view of slots assigned to you.' : 'View class schedules, rooms and faculty assignments.'}><button className="btn btn-secondary" onClick={() => exportWeeklyTimetable(entries)}><Download size={17} /> Download</button>{user.role === 'admin' && <button className="btn btn-primary" onClick={() => setEditing({ mode: 'create', row: null })}><Plus size={17} /> Add slot</button>}</PageHeader>
       {message && <p className="form-error">{message}</p>}
       {user.role === 'faculty' && <section className="faculty-calendar panel"><div className="panel-heading"><div><h2>This week</h2><p>Your assigned teaching slots are highlighted.</p></div></div><div className="faculty-calendar-grid">{['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day) => <div className="calendar-day" key={day}><h3>{day}</h3>{entries.filter((x) => x.day === day).map((slot) => <article className="slot-card mine" key={slot.id}><strong>{slot.subject}</strong><span>{slot.startTime} - {slot.endTime}</span><small>{slot.batch} · {slot.room}</small></article>)}</div>)}</div></section>}
       <section className="panel"><div className="timetable-filters"><label>Course<select><option>B.Tech CSE</option></select></label><label>Batch<select><option>2022-26 · Section A</option></select></label><label>Faculty<select><option>{user.role === 'faculty' ? 'My slots' : 'All faculty'}</option></select></label></div>

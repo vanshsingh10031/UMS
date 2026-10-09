@@ -395,7 +395,7 @@ public class MastersController(AppDbContext db) : ControllerBase
     private static async Task<object> Page<T>(IQueryable<T> query, int page, int pageSize)
     {
         page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 100);
+        pageSize = Math.Clamp(pageSize, 1, 1000);
         var total = await query.CountAsync();
         var data = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         return new { data, total, page, pageSize };
